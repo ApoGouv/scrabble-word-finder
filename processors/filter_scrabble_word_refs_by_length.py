@@ -1,9 +1,9 @@
 from utils.helpers import save_to_json
 import json
 
-def filter_scrabble_words(
-        input_file="assets/data/json/scrabble_words_with_refs_fixed.json",
-        output_file="assets/data/json/scrabble_words_with_refs_2_to_8_chars.json"):
+def filter_scrabble_word_refs(
+        input_file="assets/data/json/scrabble_word_refs_fixed.json",
+        output_file="assets/data/json/scrabble_words_filtered_2_to_8_chars.json"):
     """
     Filter entries to include only those where the first word in the 'word' field has 2-8 characters.
 

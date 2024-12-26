@@ -9,9 +9,9 @@ def extract_scrabble_word_refs(
         swr_pdf_path="assets/pdf/scrabble-word-refs-2020-02-12.pdf", 
         swr_start_page=4, 
         swr_end_page=67, 
-        swr_output_txt_dir="assets/data/txt/scrabble_word_refs", 
-        swr_output_json_file="assets/data/json/scrabble_words_with_refs.json",
-        swr_stats_file="assets/data/txt/scrabble_word_refs_stats.txt"):
+        swr_output_txt_dir="assets/data/txt/scrabble_word_refs_raw", 
+        swr_output_json_file="assets/data/json/scrabble_word_refs_raw.json",
+        swr_stats_file="assets/data/txt/scrabble_word_refs_raw_stats.txt"):
     """
     Extract Scrabble words from a given PDF, clean up the text, and save the results.
     

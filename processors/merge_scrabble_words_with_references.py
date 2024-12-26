@@ -1,10 +1,10 @@
 from utils.helpers import save_to_json
 import json
 
-def merge_refs_with_scrabble_words(
-        dict_file="assets/data/json/scrabble_words.json",
-        fixed_file="assets/data/json/scrabble_words_with_refs_2_to_8_chars.json",
-        output_file="assets/data/json/merged_scrabble_words.json"):
+def merge_scrabble_words_with_refs(
+        dict_file="assets/data/json/scrabble_words_raw.json",
+        fixed_file="assets/data/json/scrabble_words_filtered_2_to_8_chars.json",
+        output_file="assets/data/json/merged_scrabble_words_with_refs.json"):
     """
     Merge all words from the dictionary JSON with data from the fixed JSON.
 

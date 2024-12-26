@@ -12,7 +12,7 @@ scrabble_points_gr = {
 }
 
 def preprocess_scrabble_data(
-        input_file="assets/data/json/merged_scrabble_words.json", 
+        input_file="assets/data/json/merged_scrabble_words_with_refs.json", 
         output_words_file="assets/data/json/scrabble_words_2_to_8_chars.json", 
         output_stats_file="assets/data/json/scrabble_words_2_to_8_chars_metadata.json"):
     """

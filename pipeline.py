@@ -1,10 +1,11 @@
 import os
 
-from extractors.extract_scrabble_word_refs import extract_scrabble_word_refs
-from utils.fix_scrabble_refs import fix_scrabble_refs
-from utils.filter_words import filter_scrabble_words
-from utils.merge_refs_with_scrabble_words import merge_refs_with_scrabble_words
-from utils.preprocess_scrabble_data import preprocess_scrabble_data
+from extractors.extract_scrabble_words_from_pdf import extract_scrabble_words
+from extractors.extract_scrabble_word_refs_from_pdf import extract_scrabble_word_refs
+from processors.fix_scrabble_word_refs import fix_scrabble_refs
+from processors.filter_scrabble_word_refs_by_length import filter_scrabble_word_refs
+from processors.merge_scrabble_words_with_references import merge_scrabble_words_with_refs
+from processors.preprocess_scrabble_data import preprocess_scrabble_data
 
 def run_pipeline():
     """
@@ -12,63 +13,67 @@ def run_pipeline():
     """
 
     # Generic Directories
-    output_json_dir= "assets/data/json"
-    if not os.path.exists(output_json_dir):
-        os.makedirs(output_json_dir)
+    json_output_dir = "assets/data/json"
+    if not os.path.exists(json_output_dir):
+        os.makedirs(json_output_dir)
 
-    output_txt_dir= "assets/data/txt"
-    if not os.path.exists(output_txt_dir):
-        os.makedirs(output_txt_dir)
+    txt_output_dir = "assets/data/txt"
+    if not os.path.exists(txt_output_dir):
+        os.makedirs(txt_output_dir)
 
     # Configuration for Scrabble Words (sw)
-    sw_pdf_path = "assets/pdf/scrabble-acceptable-greek-words-2-8-2024_09_01.pdf"
-    sw_start_page = 4
-    sw_end_page = 463  # Maximum page number is 463
+    scrabble_words_pdf_path = "assets/pdf/scrabble-acceptable-greek-words-2-8-2024_09_01.pdf"
+    scrabble_words_start_page = 4
+    scrabble_words_end_page = 463  # Maximum page number is 463
 
-    # Directories and files
-    sw_output_txt_dir = f"{output_txt_dir}/scrabble_words"
+    # Directories and files for Scrabble Words
+    scrabble_words_txt_dir = f"{txt_output_dir}/scrabble_words_raw"
     # Create output directory if it doesn't exist
-    if not os.path.exists(sw_output_txt_dir):
-        os.makedirs(sw_output_txt_dir)
+    if not os.path.exists(scrabble_words_txt_dir):
+        os.makedirs(scrabble_words_txt_dir)
 
-    sw_output_json_file = f"{output_json_dir}/scrabble_words.json"
+    scrabble_words_json_file = f"{json_output_dir}/scrabble_words_raw.json"
 
-    # Call the extraction function for Scrabble Words
-    # extract_scrabble_words(sw_pdf_path, sw_start_page, sw_end_page, sw_output_txt_dir, sw_output_json_file)
+    # Extract Scrabble Words
+    extract_scrabble_words(scrabble_words_pdf_path, scrabble_words_start_page, scrabble_words_end_page, scrabble_words_txt_dir, scrabble_words_json_file)
 
     # Configuration for Scrabble Word References (swr)
-    swr_pdf_path = "assets/pdf/scrabble-word-refs-2020-02-12.pdf"
-    swr_start_page = 5
-    swr_end_page = 67  # Maximum page number is 67
+    scrabble_word_refs_pdf_path = "assets/pdf/scrabble-word-refs-2020-02-12.pdf"
+    scrabble_word_refs_start_page = 5
+    scrabble_word_refs_end_page = 67  # Maximum page number is 67
 
-    swr_output_txt_dir = f"{output_txt_dir}/scrabble_word_refs"
+    scrabble_word_refs_txt_dir = f"{txt_output_dir}/scrabble_word_refs_raw"
     # Create output directory if it doesn't exist
-    if not os.path.exists(swr_output_txt_dir):
-        os.makedirs(swr_output_txt_dir)
+    if not os.path.exists(scrabble_word_refs_txt_dir):
+        os.makedirs(scrabble_word_refs_txt_dir)
 
-    swr_output_json_file = f"{output_json_dir}/scrabble_words_with_refs.json"
+    scrabble_word_refs_json_file = f"{json_output_dir}/scrabble_word_refs_raw.json"
 
-    # Call the extraction function for Scrabble Words References
-    # extract_scrabble_word_refs(swr_pdf_path, swr_start_page, swr_end_page, swr_output_txt_dir, swr_output_json_file)
+    # Extract Scrabble Word References
+    extract_scrabble_word_refs(scrabble_word_refs_pdf_path, scrabble_word_refs_start_page, scrabble_word_refs_end_page, scrabble_word_refs_txt_dir, scrabble_word_refs_json_file)
 
-    swrfix_output_json_file = f"{output_json_dir}/scrabble_words_with_refs_fixed.json"
-    # fix_scrabble_refs(swr_output_json_file, swrfix_output_json_file)
+    # Fix Scrabble Word References
+    scrabble_word_refs_fixed_json_file = f"{json_output_dir}/scrabble_word_refs_fixed.json"
+    fix_scrabble_refs(scrabble_word_refs_json_file, scrabble_word_refs_fixed_json_file)
 
-    swrfiltered_output_json_file = f"{output_json_dir}/scrabble_words_with_refs_2_to_8_chars.json"
-    # filter_scrabble_words(swrfix_output_json_file, swrfiltered_output_json_file)
+    # Filter Scrabble Words by Length (2 to 8 characters)
+    filtered_scrabble_word_refs_json_file = f"{json_output_dir}/scrabble_words_filtered_2_to_8_chars.json"
+    filter_scrabble_word_refs(scrabble_word_refs_fixed_json_file, filtered_scrabble_word_refs_json_file)
 
-    merged_scrabble_words_output_json_file = f"{output_json_dir}/merged_scrabble_words.json"
-    # merge_refs_with_scrabble_words(
-    #     dict_file=sw_output_json_file,
-    #     fixed_file=swrfiltered_output_json_file,
-    #     output_file=merged_scrabble_words_output_json_file)
-    
-    final_output_words_file = f"{output_json_dir}/scrabble_words_2_to_8_chars.json"
-    final_output_stats_file = f"{output_json_dir}/scrabble_words_2_to_8_chars_metadata.json"
+    # Merge Scrabble Words with References
+    merged_scrabble_words_json_file = f"{json_output_dir}/merged_scrabble_words_with_refs.json"
+    merge_scrabble_words_with_refs(
+        dict_file=scrabble_words_json_file,
+        fixed_file=filtered_scrabble_word_refs_json_file,
+        output_file=merged_scrabble_words_json_file)
+
+    # Final Preprocessing of Scrabble Words
+    final_scrabble_words_json_file = f"{json_output_dir}/scrabble_words_2_to_8_chars.json"
+    final_scrabble_words_metadata_json_file = f"{json_output_dir}/scrabble_words_2_to_8_chars_metadata.json"
     preprocess_scrabble_data(
-        input_file=merged_scrabble_words_output_json_file, 
-        output_words_file=final_output_words_file, 
-        output_stats_file=final_output_stats_file)
+        input_file=merged_scrabble_words_json_file, 
+        output_words_file=final_scrabble_words_json_file, 
+        output_stats_file=final_scrabble_words_metadata_json_file)
 
 if __name__ == "__main__":
     run_pipeline()

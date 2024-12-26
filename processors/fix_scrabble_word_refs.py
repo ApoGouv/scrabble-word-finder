@@ -2,8 +2,8 @@ from utils.helpers import save_to_json
 import json
 
 def fix_scrabble_refs(
-        input_file="assets/data/json/scrabble_words_with_refs.json",
-        output_file="assets/data/json/scrabble_words_with_refs_fixed.json"):
+        input_file="assets/data/json/scrabble_word_refs_raw.json",
+        output_file="assets/data/json/scrabble_word_refs_fixed.json"):
     """
     Fix entries with empty 'lemma' or 'dictionary' fields in a JSON file.
 

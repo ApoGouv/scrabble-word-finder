@@ -8,9 +8,9 @@ def extract_scrabble_words(
         pdf_path="assets/pdf/scrabble-acceptable-greek-words-2-8-2024_09_01.pdf", 
         start_page=4, 
         end_page=463, 
-        output_txt_dir="assets/data/txt/scrabble_words", 
-        output_json_file="assets/data/json/scrabble_words.json",
-        stats_file="assets/data/txt/scrabble_words_stats.txt"):
+        output_txt_dir="assets/data/txt/scrabble_words_raw", 
+        output_json_file="assets/data/json/scrabble_words_raw.json",
+        stats_file="assets/data/txt/scrabble_words_raw_stats.txt"):
     """
     Extract Scrabble words from a given PDF, clean up the text, and save the results.
     
