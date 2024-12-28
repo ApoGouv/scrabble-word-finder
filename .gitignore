@@ -374,6 +374,35 @@ yarn-error.log
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,node,python,text,vue,vuejs
 
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
 !requirements.txt
+
+data-prep/assets/data/txt/scrabble_words_raw/*.txt
+data-prep/assets/data/txt/scrabble_word_refs_raw/*.txt
