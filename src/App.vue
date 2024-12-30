@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+  import idb from './api/idb';
   import LetterTile from './components/LetterTile.vue';
   import Modes from './components/Modes.vue';
   import Results from './components/Results.vue';
@@ -18,6 +19,8 @@
   // 'validate' or 'searchAnagram'
   const currentMode = ref('validate');
   const letterCounts = ref<Record<string, number>>({});
+  // Reactive loader state
+  const isLoading = ref(true);
   const results = ref<string[]>([]);
 
   // Initialize letterCounts with all counts set to 0
@@ -154,7 +157,7 @@
   };
 
   // Handle submission of the input
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Trim the input to avoid spaces
     const trimmedInput = inputWord.value.trim();
 
@@ -174,24 +177,64 @@
 
     // Proceed based on the mode
     if (currentMode.value === 'validate') {
-      validateWord(trimmedInput);
+      const validationResults = await validateWord(trimmedInput);
     } else if (currentMode.value === 'searchAnagram') {
       // Add logic to search for anagrams
       searchAnagrams(trimmedInput);
     }
   };
 
-  // Function to validate the word in 'validate' mode
-  const validateWord = (word: string) => {
-    // Logic to validate the word against the dictionary
-    // For now, we can use a simple check (this will need actual dictionary logic)
-    const isValid = letterData.some((tile) => tile.letter === word); // Placeholder logic
-    if (isValid) {
-      toast.success('Word is valid!');
-    } else {
-      toast.error('Invalid word.');
+  // Helper function to load words for the starting letter
+  async function loadWordsByLetter(letter: string): Promise<any[]> {
+    const url = `/data/words_by_starting_letter/words_starting_with_${letter}.json`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Failed to load words for letter: ${letter}`);
     }
-  };
+    return await response.json();
+  }
+
+  async function validateWord(word: string) {
+    // Get the first letter of the word
+    const startingLetter = word[0].toUpperCase();
+
+    isLoading.value = true; // Show the loader
+
+    try {
+      // Check if the word is already in IndexedDB
+      const cachedWord = await idb.getWord(word);
+
+      if (cachedWord) {
+        console.log("Word is valid!", cachedWord);
+        toast.success('Word is valid!');
+        return;
+      }
+
+      // If not cached, fetch and save the data to the database
+      const words = await loadWordsByLetter(startingLetter);
+      await idb.addWordsTableData(words);
+
+      // Validate the word again after caching
+      const wordExists = words.some((entry) => entry.word === word);
+      if (wordExists) {
+        console.log("Word is valid!!", wordExists);
+        toast.success('Word is valid!');
+      } else {
+        console.log("Invalid word..", wordExists);
+        toast.error('Invalid word.');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error validating word:', error.message);
+      } else {
+        console.error('Error validating word:', error);
+      }
+      toast.error('An error occurred during validation.');
+    } finally {
+      isLoading.value = false; // Hide the loader
+    }
+  }
 
   // Function to search for anagrams in 'searchAnagram' mode
   const searchAnagrams = (letters: string) => {
@@ -212,58 +255,63 @@
   <div id="app" class="app-container">
     <h1 class="scrabble-header">Greek Scrabble Finder</h1>
 
-    <!-- Tiles, Input and Modes -->
-    <div class="form-container">
-      <!-- App modes -->
-      <Modes :currentMode="currentMode" @changeMode="changeMode" />
+    <div class="app-wrapper">
+      <!-- Loader -->
+      <div v-if="isLoading" class="loader">Validating...</div>
 
-      <!-- Letter Tile Grid -->
-      <div class="tile-grid">
-        <LetterTile
-          v-for="tile in letterData"
-          :key="tile.letter"
-          :letter="tile.letter"
-          :points="tile.points"
-          :isDisabled="currentMode === 'validate' && tile.letter === '*'"
-          @click="handleTileClick(tile.letter)"
-        />
-      </div>
+      <!-- Tiles, Input and Modes -->
+      <div class="form-container">
+        <!-- App modes -->
+        <Modes :currentMode="currentMode" @changeMode="changeMode" />
 
-      <div class="scrabble-input-wrapper">
-        <input
-          type="text"
-          class="scrabble-input"
-          v-model="inputWord"
-          :placeholder="
-            currentMode === 'searchAnagram'
-              ? 'Enter your letters (wildcards allowed)...'
-              : 'Enter your word for validation...'
-          "
-          readonly
-          aria-label="Read only input field for letters or word"
-        />
+        <!-- Letter Tile Grid -->
+        <div class="tile-grid">
+          <LetterTile
+            v-for="tile in letterData"
+            :key="tile.letter"
+            :letter="tile.letter"
+            :points="tile.points"
+            :isDisabled="currentMode === 'validate' && tile.letter === '*'"
+            @click="handleTileClick(tile.letter)"
+          />
+        </div>
+
+        <div class="scrabble-input-wrapper">
+          <input
+            type="text"
+            class="scrabble-input"
+            v-model="inputWord"
+            :placeholder="
+              currentMode === 'searchAnagram'
+                ? 'Enter your letters (wildcards allowed)...'
+                : 'Enter your word for validation...'
+            "
+            readonly
+            aria-label="Read only input field for letters or word"
+          />
+          <button
+            v-if="inputWord.length > 0"
+            class="clear-button"
+            @click="clearInput"
+            title="Clear Input"
+            aria-label="Clear the input field"
+          >
+            ✖
+          </button>
+        </div>
+
         <button
-          v-if="inputWord.length > 0"
-          class="clear-button"
-          @click="clearInput"
-          title="Clear Input"
-          aria-label="Clear the input field"
+          :disabled="!inputWord"
+          @click="handleSubmit"
+          aria-label="Submit the word or letters"
         >
-          ✖
+          Submit
         </button>
       </div>
 
-      <button
-        :disabled="!inputWord"
-        @click="handleSubmit"
-        aria-label="Submit the word or letters"
-      >
-        Submit
-      </button>
+      <!-- Results Section -->
+      <Results :results="results" />
     </div>
-
-    <!-- Results Section -->
-    <Results :results="results" />
   </div>
 </template>
 
@@ -279,6 +327,14 @@
   }
   .logo.vue:hover {
     filter: drop-shadow(0 0 2em #42b883aa);
+  }
+
+  .loader {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
   }
 
   .tile-grid {
