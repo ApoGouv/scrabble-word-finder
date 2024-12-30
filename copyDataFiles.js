@@ -23,13 +23,13 @@ async function copyData() {
     // Ensure destination directory exists after clearing
     await fs.mkdir(destDir, { recursive: true });
 
-    // Copy 'words_by_anagram' directory
+    // Copy 'words_by_alphagram' directory
     await fs.cp(
-      join(sourceDir, 'words_by_anagram'),
-      join(destDir, 'words_by_anagram'),
+      join(sourceDir, 'words_by_alphagram'),
+      join(destDir, 'words_by_alphagram'),
       { recursive: true }
     );
-    console.log('words_by_anagram copied!');
+    console.log('words_by_alphagram copied!');
 
     // Copy 'words_by_starting_letter' directory
     await fs.cp(
