@@ -1,5 +1,6 @@
 import os
 import json
+import shutil  # Import shutil for folder cleanup
 
 def split_data_by_starting_letter(data, output_dir):
     """
@@ -24,29 +25,29 @@ def split_data_by_starting_letter(data, output_dir):
 
         # Write minified version
         with open(letter_file_minified, "w", encoding="utf-8") as f:
-            json.dump(words, f, ensure_ascii=False)
+            json.dump(words, f, ensure_ascii=False, separators=(',', ':'))
 
-def split_data_by_anagram(data, output_dir):
+def split_data_by_alphagram(data, output_dir):
     """
-    Split data into a single JSON file grouped by anagrams, without metadata.
+    Split data into a single JSON file with words grouped by alphagram, without metadata.
     """
-    # Group words by anagram (sorted letters)
-    grouped_anagrams = {}
+    # Group words by alphagram (sorted letters)
+    grouped_words_by_alphagram = {}
     for entry in data:
-        anagram_key = entry["alphagram"]
-        if anagram_key not in grouped_anagrams:
-            grouped_anagrams[anagram_key] = []
-        grouped_anagrams[anagram_key].append(entry["word"])
+        alphagram_key = entry["alphagram"]
+        if alphagram_key not in grouped_words_by_alphagram:
+            grouped_words_by_alphagram[alphagram_key] = []
+        grouped_words_by_alphagram[alphagram_key].append(entry["word"])
 
     # Write readable version
-    anagrams_file_readable = os.path.join(output_dir, "words_grouped_by_anagrams.json")
-    with open(anagrams_file_readable, "w", encoding="utf-8") as f:
-        json.dump(grouped_anagrams, f, ensure_ascii=False, indent=2)
+    alphagrams_file_readable = os.path.join(output_dir, "words_grouped_by_alphagram.json")
+    with open(alphagrams_file_readable, "w", encoding="utf-8") as f:
+        json.dump(grouped_words_by_alphagram, f, ensure_ascii=False, indent=2)
 
     # Write minified version
-    anagrams_file_minified = os.path.join(output_dir, "words_grouped_by_anagrams_min.json")
-    with open(anagrams_file_minified, "w", encoding="utf-8") as f:
-        json.dump(grouped_anagrams, f, ensure_ascii=False)
+    alphagrams_file_minified = os.path.join(output_dir, "words_grouped_by_alphagram_min.json")
+    with open(alphagrams_file_minified, "w", encoding="utf-8") as f:
+        json.dump(grouped_words_by_alphagram, f, ensure_ascii=False, separators=(',', ':'))
 
 if __name__ == "__main__":
     # File paths
@@ -56,6 +57,14 @@ if __name__ == "__main__":
     # Create output directory if it doesn't exist
     if not os.path.exists(web_output_dir):
         os.makedirs(web_output_dir)
+    else:
+        # Remove all contents of the web_data directory
+        for file_or_dir in os.listdir(web_output_dir):
+            path = os.path.join(web_output_dir, file_or_dir)
+            if os.path.isfile(path) or os.path.islink(path):
+                os.unlink(path)  # Remove file or symbolic link
+            elif os.path.isdir(path):
+                shutil.rmtree(path)  # Remove directory
 
     # Load the data
     with open(final_scrabble_words_json_file, "r", encoding="utf-8") as f:
@@ -66,9 +75,9 @@ if __name__ == "__main__":
     os.makedirs(words_by_letter_dir, exist_ok=True)
     split_data_by_starting_letter(scrabble_data, words_by_letter_dir)
 
-    # Split data by anagrams
-    words_by_anagrams_dir = os.path.join(web_output_dir, "words_by_anagram")
-    os.makedirs(words_by_anagrams_dir, exist_ok=True)
-    split_data_by_anagram(scrabble_data, words_by_anagrams_dir)
+    # Split data by alphagram
+    words_by_alphagram_dir = os.path.join(web_output_dir, "words_by_alphagram")
+    os.makedirs(words_by_alphagram_dir, exist_ok=True)
+    split_data_by_alphagram(scrabble_data, words_by_alphagram_dir)
 
     print(f"Data successfully split and stored in {web_output_dir}")
