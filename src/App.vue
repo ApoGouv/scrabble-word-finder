@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
   import idb from './api/idb';
+  import Header from './components/Header.vue';
   import LetterTile from './components/LetterTile.vue';
   import Modes from './components/Modes.vue';
   import Results from './components/Results.vue';
@@ -252,9 +253,8 @@
 </script>
 
 <template>
-  <div id="app" class="app-container">
-    <h1 class="scrabble-header">Greek Scrabble Finder</h1>
-
+  <Header></Header>
+  <div class="app-container container">
     <div class="app-wrapper">
       <!-- Loader -->
       <div v-if="isLoading" class="loader">Validating...</div>
@@ -304,6 +304,7 @@
           :disabled="!inputWord"
           @click="handleSubmit"
           aria-label="Submit the word or letters"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Submit
         </button>
