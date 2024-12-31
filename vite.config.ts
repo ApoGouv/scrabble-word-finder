@@ -10,6 +10,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)), // '@' maps to 'src'
     },
   },
+  base: "/scrabble-word-finder/",
   build: {
     minify: 'esbuild',
     terserOptions: {

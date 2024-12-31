@@ -2,7 +2,7 @@
 export async function fetchWordsByLetter(
   letter: string
 ): Promise<any[] | null> {
-  const url = `/data/words_by_starting_letter/words_starting_with_${letter}.json`;
+  const url = `${import.meta.env.BASE_URL}/data/words_by_starting_letter/words_starting_with_${letter}.json`;
 
   try {
     const response = await fetch(url);
@@ -23,7 +23,7 @@ export async function fetchWordsByAlphagram(): Promise<Record<
   string,
   string[]
 > | null> {
-  const url = '/data/words_by_alphagram/words_grouped_by_alphagram.json';
+  const url = `${import.meta.env.BASE_URL}data/words_by_alphagram/words_grouped_by_alphagram.json`;
 
   try {
     const response = await fetch(url);
