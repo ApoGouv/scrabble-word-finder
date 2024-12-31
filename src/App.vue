@@ -2,10 +2,11 @@
   import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
   import { useToast } from 'vue-toastification';
   import Header from '@/components/Header.vue';
+  import Footer from '@/components/Footer.vue';
   import LetterTile from '@/components/LetterTile.vue';
   import Modes from '@/components/Modes.vue';
   import Results from '@/components/Results.vue';
-  import Loader from './components/Loader.vue';
+  import Loader from '@/components/Loader.vue';
   import {
     letterData,
     validateTileClick,
@@ -202,70 +203,75 @@
 </script>
 
 <template>
-  <Header></Header>
-  <div class="app-container container mx-auto px-4 py-8">
-      <!-- Loader -->
-      <Loader v-if="isLoading" />
+  <div class="min-h-screen flex flex-col">
+    <Header></Header>
 
-      <!-- Tiles, Input and Modes -->
-      <div class="form-container flex flex-col md:flex-row gap-6 justify-between items-start">
-        <!-- App modes -->
-        <Modes :currentMode="currentMode" @changeMode="changeMode" />
+    <div class="app-container container mx-auto px-4 py-8 flex-1">
+        <!-- Loader -->
+        <Loader v-if="isLoading" />
 
-        <!-- Letter Tile Grid -->
-        <div class="tile-grid grid grid-cols-6 md:grid-cols-8 gap-2 w-full max-w-lg">
-          <LetterTile
-            v-for="tile in letterData"
-            :key="tile.letter"
-            :letter="tile.letter"
-            :points="tile.points"
-            :isDisabled="currentMode === 'validate' && tile.letter === '*'"
-            @click="handleTileClick(tile.letter)"
-            class="w-12 h-12 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
-          />
-        </div>
+        <!-- Tiles, Input and Modes -->
+        <div class="form-container flex flex-col md:flex-row gap-6 justify-between items-start">
+          <!-- App modes -->
+          <Modes :currentMode="currentMode" @changeMode="changeMode" />
 
-        <div class="flex flex-col gap-4 w-full max-w-lg">
-          <div class="scrabble-input-wrapper">
-            <input
-              type="text"
-              class="scrabble-input p-3 text-xl border border-teal-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-              v-model="inputWord"
-              :placeholder="
-                currentMode === 'searchAnagram'
-                  ? 'Choose your letters (wildcards allowed)...'
-                  : 'Choose your word for validation...'
-              "
-              readonly
-              aria-label="Read only input field for letters or word"
-              ref="inputField"
+          <!-- Letter Tile Grid -->
+          <div class="tile-grid grid grid-cols-6 md:grid-cols-8 gap-2 w-full max-w-lg">
+            <LetterTile
+              v-for="tile in letterData"
+              :key="tile.letter"
+              :letter="tile.letter"
+              :points="tile.points"
+              :isDisabled="currentMode === 'validate' && tile.letter === '*'"
+              @click="handleTileClick(tile.letter)"
+              class="w-12 h-12 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
             />
-            <button
-              v-if="inputWord.length > 0"
-              class="clear-button text-xl"
-              @click="clearInput"
-              title="Clear Input"
-              aria-label="Clear the input field"
-            >
-              ✖
-            </button>
           </div>
-          <div class="scrabble-submit-wrapper">
-            <button
-              :disabled="!inputWord"
-              @click="handleSubmit"
-              aria-label="Submit the word or letters"
-              class="submit-button w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-6 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {{ currentMode === 'searchAnagram' ? 'Find Anagrams' : 'Validate Word' }}
-            </button>
-          </div>
-        </div><!-- End of input and submit button -->
-        
-      </div><!-- End of form-container -->
 
-      <!-- Results Section -->
-      <Results :results="results" />
+          <div class="flex flex-col gap-4 w-full max-w-lg">
+            <div class="scrabble-input-wrapper">
+              <input
+                type="text"
+                class="scrabble-input p-3 text-xl border border-teal-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                v-model="inputWord"
+                :placeholder="
+                  currentMode === 'searchAnagram'
+                    ? 'Choose your letters (wildcards allowed)...'
+                    : 'Choose your word for validation...'
+                "
+                readonly
+                aria-label="Read only input field for letters or word"
+                ref="inputField"
+              />
+              <button
+                v-if="inputWord.length > 0"
+                class="clear-button text-xl"
+                @click="clearInput"
+                title="Clear Input"
+                aria-label="Clear the input field"
+              >
+                ✖
+              </button>
+            </div>
+            <div class="scrabble-submit-wrapper">
+              <button
+                :disabled="!inputWord"
+                @click="handleSubmit"
+                aria-label="Submit the word or letters"
+                class="submit-button w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-6 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {{ currentMode === 'searchAnagram' ? 'Find Anagrams' : 'Validate Word' }}
+              </button>
+            </div>
+          </div><!-- End of input and submit button -->
+          
+        </div><!-- End of form-container -->
+
+        <!-- Results Section -->
+        <Results :results="results" />
+    </div>
+
+    <Footer></Footer>
   </div>
 </template>
 
