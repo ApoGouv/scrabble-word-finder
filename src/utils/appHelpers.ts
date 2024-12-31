@@ -61,7 +61,6 @@ export function validateTileClick(
  */
 export function validateInput(
   newVal: string,
-  oldVal: string,
   mode: string
 ): string | null {
   if (mode === 'validate' && newVal.includes('*')) {

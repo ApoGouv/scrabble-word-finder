@@ -10,4 +10,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)), // '@' maps to 'src'
     },
   },
+  build: {
+    minify: 'esbuild',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove all console.* calls in production
+      },
+    },
+  },
 });

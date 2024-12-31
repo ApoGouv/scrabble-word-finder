@@ -41,7 +41,7 @@ export const processAnagramResults = (
   input: string,
   anagrams: Record<string, string[]> | null
 ) => {
-  logger.log('processAnagramResults > Anagrams:', anagrams);
+  logger.log('processAnagramResults > Anagrams:', {input, anagrams});
   if (anagrams && Object.keys(anagrams).length > 0) {
     results.value = {
       mode: 'searchAnagram',

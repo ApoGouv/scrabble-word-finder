@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
 
-  const props = defineProps<{
+  defineProps<{
     letter: string;
     points?: number;
     isDisabled: boolean;
@@ -13,12 +13,13 @@
 
   const isHovered = ref(false);
 
-  const handleHover = () => {
-    isHovered.value = true;
-    setTimeout(() => {
-      isHovered.value = false;
-    }, 300); // Duration to match hover effect
-  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   const handleHover = () => {
+//     isHovered.value = true;
+//     setTimeout(() => {
+//       isHovered.value = false;
+//     }, 300); // Duration to match hover effect
+//   };
 </script>
 
 <template>

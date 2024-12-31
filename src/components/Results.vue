@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   results: {
     mode: 'validate' | 'searchAnagram';
     data: any;

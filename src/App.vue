@@ -137,7 +137,7 @@
 
   // Watch the input field to ensure no more than 8 letters
   watch(inputWord, (newVal, oldVal) => {
-    const error = validateInput(newVal, oldVal, currentMode.value);
+    const error = validateInput(newVal, currentMode.value);
     if (error) {
       inputWord.value = oldVal;
       toast.error(error);
