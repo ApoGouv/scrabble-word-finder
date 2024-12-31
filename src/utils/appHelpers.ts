@@ -98,3 +98,28 @@ export function addLetterToInput(
     };
   }
 }
+
+// Helper function to generate all combinations of a given length
+export function generateCombinations(
+  letters: string[],
+  length: number
+): string[] {
+  const combinations: string[] = [];
+
+  const generate = (current: string[], start: number) => {
+    if (current.length === length) {
+      combinations.push(current.join(''));
+      return;
+    }
+    for (let i = start; i < letters.length; i++) {
+      generate([...current, letters[i]], i + 1);
+    }
+  };
+
+  generate([], 0);
+  return combinations;
+}
+
+export function getAlphagram(input: string): string {
+  return input.toUpperCase().split('').sort().join('');
+}

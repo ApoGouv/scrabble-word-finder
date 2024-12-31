@@ -1,11 +1,10 @@
 <script setup lang="ts">
   import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-  import idb from './api/idb';
-  import Header from './components/Header.vue';
-  import LetterTile from './components/LetterTile.vue';
-  import Modes from './components/Modes.vue';
-  import Results from './components/Results.vue';
   import { useToast } from 'vue-toastification';
+  import Header from '@/components/Header.vue';
+  import LetterTile from '@/components/LetterTile.vue';
+  import Modes from '@/components/Modes.vue';
+  import Results from '@/components/Results.vue';
   import {
     letterData,
     validateTileClick,
@@ -13,16 +12,23 @@
     resetLetterCounts,
     addLetterToInput,
   } from './utils/appHelpers';
+  import { validateWord } from '@/api/wordValidation';
+  import { searchAnagrams } from '@/api/anagramSearch';
+  import { results, processValidationResult, processAnagramResults } from '@/utils/resultsHelpers';
 
   const toast = useToast();
 
+  const inputField = ref<HTMLInputElement | null>(null);
   const inputWord = ref('');
   // 'validate' or 'searchAnagram'
-  const currentMode = ref('validate');
+  const modes = ['validate', 'searchAnagram'] as const;
+  type Mode = typeof modes[number];
+
+  const currentMode = ref<Mode>('validate');
+
   const letterCounts = ref<Record<string, number>>({});
   // Reactive loader state
   const isLoading = ref(true);
-  const results = ref<string[]>([]);
 
   // Initialize letterCounts with all counts set to 0
   letterData.forEach(({ letter }) => {
@@ -122,6 +128,9 @@
     } else {
       toast.success(result.message);
     }
+
+    // Shift focus to the input field
+    inputField.value?.focus();
   };
 
   // Watch the input field to ensure no more than 8 letters
@@ -134,7 +143,7 @@
   });
 
   // Change the mode (e.g., 'validate' or 'searchAnagram')
-  const changeMode = (mode: string) => {
+  const changeMode = (mode: Mode) => {
     // Prevent redundant state changes
     if (mode === currentMode.value) return;
 
@@ -142,6 +151,9 @@
     currentMode.value = mode;
 
     clearInput();
+
+    // Reset results
+    results.value = null;
 
     const modeMessage =
       mode === 'validate'
@@ -178,76 +190,12 @@
 
     // Proceed based on the mode
     if (currentMode.value === 'validate') {
-      const validationResults = await validateWord(trimmedInput);
+      const validationResults = await validateWord(trimmedInput, toast, isLoading);
+      processValidationResult(trimmedInput, validationResults);
     } else if (currentMode.value === 'searchAnagram') {
       // Add logic to search for anagrams
-      searchAnagrams(trimmedInput);
-    }
-  };
-
-  // Helper function to load words for the starting letter
-  async function loadWordsByLetter(letter: string): Promise<any[]> {
-    const url = `/data/words_by_starting_letter/words_starting_with_${letter}.json`;
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Failed to load words for letter: ${letter}`);
-    }
-    return await response.json();
-  }
-
-  async function validateWord(word: string) {
-    // Get the first letter of the word
-    const startingLetter = word[0].toUpperCase();
-
-    isLoading.value = true; // Show the loader
-
-    try {
-      // Check if the word is already in IndexedDB
-      const cachedWord = await idb.getWord(word);
-
-      if (cachedWord) {
-        console.log("Word is valid!", cachedWord);
-        toast.success('Word is valid!');
-        return;
-      }
-
-      // If not cached, fetch and save the data to the database
-      const words = await loadWordsByLetter(startingLetter);
-      await idb.addWordsTableData(words);
-
-      // Validate the word again after caching
-      const wordExists = words.some((entry) => entry.word === word);
-      if (wordExists) {
-        console.log("Word is valid!!", wordExists);
-        toast.success('Word is valid!');
-      } else {
-        console.log("Invalid word..", wordExists);
-        toast.error('Invalid word.');
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error validating word:', error.message);
-      } else {
-        console.error('Error validating word:', error);
-      }
-      toast.error('An error occurred during validation.');
-    } finally {
-      isLoading.value = false; // Hide the loader
-    }
-  }
-
-  // Function to search for anagrams in 'searchAnagram' mode
-  const searchAnagrams = (letters: string) => {
-    // Logic to search anagrams based on the input letters
-    // For now, we will return a mock result
-    const mockAnagrams = ['ΑΒ', 'ΒΓ', 'ΓΔ']; // Replace with actual anagram search logic
-    if (mockAnagrams.length > 0) {
-      results.value = mockAnagrams; // Assuming 'results' is bound to the Results component
-      toast.success('Anagrams found!');
-    } else {
-      results.value = [];
-      toast.error('No anagrams found.');
+      const anagrams = await searchAnagrams(trimmedInput, toast, isLoading);
+      processAnagramResults(trimmedInput, anagrams);
     }
   };
 </script>
@@ -255,7 +203,6 @@
 <template>
   <Header></Header>
   <div class="app-container container">
-    <div class="app-wrapper">
       <!-- Loader -->
       <div v-if="isLoading" class="loader">Validating...</div>
 
@@ -283,11 +230,12 @@
             v-model="inputWord"
             :placeholder="
               currentMode === 'searchAnagram'
-                ? 'Enter your letters (wildcards allowed)...'
-                : 'Enter your word for validation...'
+                ? 'Choose your letters (wildcards allowed)...'
+                : 'Choose your word for validation...'
             "
             readonly
             aria-label="Read only input field for letters or word"
+            ref="inputField"
           />
           <button
             v-if="inputWord.length > 0"
@@ -312,7 +260,6 @@
 
       <!-- Results Section -->
       <Results :results="results" />
-    </div>
   </div>
 </template>
 
