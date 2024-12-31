@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { logger } from '@/utils/logger';
 
 export const results = ref<{
   mode: 'validate' | 'searchAnagram';
@@ -20,6 +21,7 @@ export const processValidationResult = (word: string, result: any | null) => {
     results.value = {
       mode: 'validate',
       data: {
+        word,
         message: 'ΑΠΟΔΕΚΤΗ ΛΕΞΗ',
         details,
       },
@@ -28,6 +30,7 @@ export const processValidationResult = (word: string, result: any | null) => {
     results.value = {
       mode: 'validate',
       data: {
+        word,
         message: 'ΜΗ ΑΠΟΔΕΚΤΗ ΛΕΞΗ',
       },
     };
@@ -38,7 +41,7 @@ export const processAnagramResults = (
   input: string,
   anagrams: Record<string, string[]> | null
 ) => {
-  console.log('processAnagramResults > Anagrams:', anagrams);
+  logger.log('processAnagramResults > Anagrams:', anagrams);
   if (anagrams && Object.keys(anagrams).length > 0) {
     results.value = {
       mode: 'searchAnagram',

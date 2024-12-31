@@ -17,7 +17,7 @@ const props = defineProps<{
         v-if="results.data.message === 'ΑΠΟΔΕΚΤΗ ΛΕΞΗ'" 
         class="bg-green-100 p-4 rounded-lg shadow-md border border-green-300"
       >
-        <p class="text-green-700 font-semibold text-lg">{{ results.data.message }}</p>
+        <p class="text-green-700 font-semibold text-lg">{{ results.data.word }}: {{ results.data.message }}</p>
 
         <!-- Display extra details only if at least one field is meaningful -->
         <div 
@@ -30,17 +30,15 @@ const props = defineProps<{
             )" 
           class="mt-4"
         >
-          <template>
             <p class="text-gray-700">
-              <strong>Λήμμα:</strong> {{ results.data.details.lemma }}
+                <strong>Λήμμα:</strong> {{ results.data.details.lemma }}
             </p>
             <p class="text-gray-700">
-              <strong>Λεξικό:</strong> {{ results.data.details.dictionary }}
+                <strong>Λεξικό:</strong> {{ results.data.details.dictionary }}
             </p>
             <p class="text-gray-700">
-              <strong>Παρατήρηση:</strong> {{ results.data.details.comments }}
+                <strong>Παρατήρηση:</strong> {{ results.data.details.comments }}
             </p>
-          </template>
         </div>
 
         <!-- Always display length and points if available -->
@@ -54,7 +52,7 @@ const props = defineProps<{
         </div>
       </div>
 
-      <p v-else class="text-gray-500 italic">{{ results.data.message }}</p>
+      <p v-else class="text-red-500 italic">{{ results.data.word }}: {{ results.data.message }}</p>
     </template>
 
     <!-- Handle searchAnagram mode -->
@@ -78,7 +76,7 @@ const props = defineProps<{
           </li>
         </ul>
       </div>
-      <p v-else class="text-gray-500 italic">No results found.</p>
+      <p v-else class="text-red-500 italic">No results found.</p>
     </template>
 
     <p v-else class="text-gray-500 italic">No results to display.</p>

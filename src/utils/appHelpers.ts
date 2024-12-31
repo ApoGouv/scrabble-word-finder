@@ -1,4 +1,5 @@
 import type { Ref } from 'vue';
+import { logger } from '@/utils/logger';
 
 /**
  * Letter data for Greek Scrabble
@@ -48,7 +49,7 @@ export function validateTileClick(
     return 'Wildcard is not allowed in validate mode.';
   }
 
-  if (mode === 'search' && counts[letter] >= letterInfo.count) {
+  if (mode === 'searchAnagram' && counts[letter] >= letterInfo.count) {
     return `Maximum ${letterInfo.count} ${letter}(s) allowed.`;
   }
 
@@ -99,6 +100,12 @@ export function addLetterToInput(
   }
 }
 
+// Greek alphabet letters
+export const GREEK_LETTERS = [
+  "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", 
+  "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
+];
+
 // Helper function to generate all combinations of a given length
 export function generateCombinations(
   letters: string[],
@@ -124,20 +131,48 @@ export function getAlphagram(input: string): string {
   return input.toUpperCase().split('').sort().join('');
 }
 
+// Function to replace wildcards and generate all possible combinations
+function replaceWildcards(letters: string[]): string[][] {
+  const wildcardIndex = letters.indexOf("*");
+
+  if (wildcardIndex === -1) {
+    // No wildcards, return the original letters as a single combination
+    return [letters];
+  }
+
+  // Generate combinations by replacing the wildcard with every Greek letter
+  const combinations: string[][] = [];
+  for (const greekLetter of GREEK_LETTERS) {
+    const newCombination = [...letters];
+    newCombination[wildcardIndex] = greekLetter; // Replace the wildcard
+    combinations.push(...replaceWildcards(newCombination)); // Recursive for multiple wildcards
+  }
+
+  
+  logger.log('replaceWildcards > combinations: ', combinations);
+
+  return combinations;
+}
+
 // Function to generate unique alphagrams for combinations of the letters
 export function getUniqueAlphagrams(
   letters: string,
   minLength: number = 2
 ): string[] {
+  // Convert to uppercase array
   const letterArray = letters.toUpperCase().split('');
+  // Handle wildcards
+  const expandedLetters = replaceWildcards(letterArray);
   const uniqueAlphagrams: Set<string> = new Set();
 
-  // Loop through combinations from 2 characters to the full length
-  for (let i = minLength; i <= letterArray.length; i++) {
-    const combinations = generateCombinations(letterArray, i);
-    for (const combo of combinations) {
-      const alphagram = getAlphagram(combo); // Get the alphagram of the combination
-      uniqueAlphagrams.add(alphagram); // Use a Set to ensure uniqueness
+  for (const expandedCombo of expandedLetters) {
+    // Generate combinations for each expanded set of letters
+    for (let i = minLength; i <= expandedCombo.length; i++) {
+      const combinations = generateCombinations(expandedCombo, i); // Use existing function
+      for (const combo of combinations) {
+        const alphagram = getAlphagram(combo); // Sort letters alphabetically
+        uniqueAlphagrams.add(alphagram); // Ensure uniqueness using a Set
+      }
     }
   }
 

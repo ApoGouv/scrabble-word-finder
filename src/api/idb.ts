@@ -1,3 +1,5 @@
+import { logger } from '@/utils/logger';
+
 const DB_NAME = 'apog-scrabble-word-data';
 const DB_VERSION = 1;
 let DB: IDBDatabase | null = null;
@@ -90,7 +92,7 @@ export default {
 
     return new Promise((resolve, reject) => {
       countRequest.onsuccess = () => {
-        console.log('idx > checkIfAlphagramTableIsEmpty: ', {
+        logger.log('idx > checkIfAlphagramTableIsEmpty: ', {
           recordsCount: countRequest.result,
         });
         resolve(countRequest.result === 0);

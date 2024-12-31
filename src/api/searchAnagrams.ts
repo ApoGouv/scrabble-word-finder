@@ -1,4 +1,5 @@
 import idb from '@/api/idb';
+import { logger } from '@/utils/logger';
 import { fetchWordsByAlphagram } from '@/api/dataFetcher';
 import { getUniqueAlphagrams } from '@/utils/appHelpers';
 
@@ -13,7 +14,7 @@ export async function searchAnagrams(
 
   isLoading.value = true; // Show the loader
 
-  console.log(
+  logger.log(
     `searchAnagrams for given letters "${letters}" and uniqueAlphagrams:`,
     { uniqueAlphagrams }
   );
@@ -62,7 +63,7 @@ export async function searchAnagrams(
     }
 
     // Optional for debugging
-    console.log('Unsorted Grouped Anagrams:', groupedByLength);
+    logger.log('Unsorted Grouped Anagrams:', groupedByLength);
 
     // Sort the groupedByLength by length in descending order
     // Then sort each group alphabetically
@@ -81,7 +82,7 @@ export async function searchAnagrams(
       }, {});
 
     // Optional for debugging
-    console.log('Sorted Grouped Anagrams:', sortedGroupedByLength);
+    logger.log('Sorted Grouped Anagrams:', sortedGroupedByLength);
 
     return sortedGroupedByLength;
   } catch (error) {
