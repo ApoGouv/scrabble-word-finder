@@ -36,32 +36,18 @@ export const processValidationResult = (word: string, result: any | null) => {
 
 export const processAnagramResults = (
   input: string,
-  anagrams: string[] | null
+  anagrams: Record<string, string[]> | null
 ) => {
-  if (anagrams && anagrams.length > 0) {
-    // Group anagrams by word length
-    const groupedByLength = anagrams.reduce<Record<number, string[]>>(
-      (acc, word) => {
-        const length = word.length;
-        if (!acc[length]) acc[length] = [];
-        acc[length].push(word);
-        return acc;
-      },
-      {}
-    );
-
+  console.log('processAnagramResults > Anagrams:', anagrams);
+  if (anagrams && Object.keys(anagrams).length > 0) {
     results.value = {
       mode: 'searchAnagram',
-      data: groupedByLength,
+      data: anagrams,
     };
-
-    console.log('Grouped Anagrams:', groupedByLength); // Optional for debugging
   } else {
     results.value = {
       mode: 'searchAnagram',
       data: {}, // Keep the structure consistent
     };
-
-    console.log('No anagrams found for input:', input); // Optional for debugging
   }
 };

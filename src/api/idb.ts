@@ -81,6 +81,29 @@ export default {
     });
   },
 
+  async checkIfAlphagramTableIsEmpty(): Promise<boolean> {
+    const db = await this.getDb();
+    const transaction = db.transaction([ALPHAGRAMS_TABLE], 'readonly');
+    const objectStore = transaction.objectStore(ALPHAGRAMS_TABLE);
+
+    const countRequest = objectStore.count();
+
+    return new Promise((resolve, reject) => {
+      countRequest.onsuccess = () => {
+        console.log('idx > checkIfAlphagramTableIsEmpty: ', {
+          recordsCount: countRequest.result,
+        });
+        resolve(countRequest.result === 0);
+      };
+
+      countRequest.onerror = (e) => {
+        reject(
+          new Error('Failed to count records in alphagrams table. Error: ' + e)
+        );
+      };
+    });
+  },
+
   async getWordsByAlphagram(alphagram: string): Promise<string[] | null> {
     const db = await this.getDb();
 

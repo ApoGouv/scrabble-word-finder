@@ -123,3 +123,24 @@ export function generateCombinations(
 export function getAlphagram(input: string): string {
   return input.toUpperCase().split('').sort().join('');
 }
+
+// Function to generate unique alphagrams for combinations of the letters
+export function getUniqueAlphagrams(
+  letters: string,
+  minLength: number = 2
+): string[] {
+  const letterArray = letters.toUpperCase().split('');
+  const uniqueAlphagrams: Set<string> = new Set();
+
+  // Loop through combinations from 2 characters to the full length
+  for (let i = minLength; i <= letterArray.length; i++) {
+    const combinations = generateCombinations(letterArray, i);
+    for (const combo of combinations) {
+      const alphagram = getAlphagram(combo); // Get the alphagram of the combination
+      uniqueAlphagrams.add(alphagram); // Use a Set to ensure uniqueness
+    }
+  }
+
+  // Convert the Set to an array and return it
+  return Array.from(uniqueAlphagrams);
+}
