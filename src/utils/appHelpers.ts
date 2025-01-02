@@ -102,8 +102,30 @@ export function addLetterToInput(
 
 // Greek alphabet letters
 export const GREEK_LETTERS = [
-  "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", 
-  "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
+  'Α',
+  'Β',
+  'Γ',
+  'Δ',
+  'Ε',
+  'Ζ',
+  'Η',
+  'Θ',
+  'Ι',
+  'Κ',
+  'Λ',
+  'Μ',
+  'Ν',
+  'Ξ',
+  'Ο',
+  'Π',
+  'Ρ',
+  'Σ',
+  'Τ',
+  'Υ',
+  'Φ',
+  'Χ',
+  'Ψ',
+  'Ω',
 ];
 
 // Helper function to generate all combinations of a given length
@@ -133,7 +155,7 @@ export function getAlphagram(input: string): string {
 
 // Function to replace wildcards and generate all possible combinations
 function replaceWildcards(letters: string[]): string[][] {
-  const wildcardIndex = letters.indexOf("*");
+  const wildcardIndex = letters.indexOf('*');
 
   if (wildcardIndex === -1) {
     // No wildcards, return the original letters as a single combination
@@ -148,7 +170,6 @@ function replaceWildcards(letters: string[]): string[][] {
     combinations.push(...replaceWildcards(newCombination)); // Recursive for multiple wildcards
   }
 
-  
   logger.log('replaceWildcards > combinations: ', combinations);
 
   return combinations;
@@ -178,4 +199,21 @@ export function getUniqueAlphagrams(
 
   // Convert the Set to an array and return it
   return Array.from(uniqueAlphagrams);
+}
+
+export function getCurrentFocusedElement() {
+  // Try to get the currently focused element
+  let focusedElement = document.activeElement;
+
+  // Check if the focused element is the body or if no element is focused
+  if (!focusedElement || focusedElement === document.body) {
+    // Use :focus pseudo-class as a fallback
+    focusedElement = document.querySelector(':focus') || null;
+  }
+
+  // Log the currently focused element
+  console.log('Currently focused element:', focusedElement);
+
+  // Return the focused element or null if none is found
+  return focusedElement;
 }

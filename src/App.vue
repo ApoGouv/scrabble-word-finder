@@ -105,7 +105,7 @@
   });
 
   // Handle tile clicks or key presses: add the letter to the input
-  const handleTileClick = (letter: string) => {
+  const handleTileClick = (letter: string, event?: Event) => {
     const letterInfo = letterData.find((tile) => tile.letter === letter);
 
     const error = validateTileClick(
@@ -132,7 +132,18 @@
     }
 
     // Shift focus to the input field
-    inputField.value?.focus();
+    // inputField.value?.focus();
+
+    // Remove focus from the clicked tile
+    if (event?.target instanceof HTMLElement) {
+      const buttonElement = event.target.closest('button');
+  
+      // Check if the target itself is a button or if a button was found as an ancestor
+      if (buttonElement && buttonElement.tagName === 'BUTTON') {
+        // Remove focus from the button
+        buttonElement.blur();
+      }
+    }
   };
 
   // Watch the input field to ensure no more than 8 letters
@@ -223,7 +234,7 @@
               :letter="tile.letter"
               :points="tile.points"
               :isDisabled="currentMode === 'validate' && tile.letter === '*'"
-              @click="handleTileClick(tile.letter)"
+              @click="(event: Event) => handleTileClick(tile.letter, event)"
               class="w-12 h-12 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
             />
           </div>
