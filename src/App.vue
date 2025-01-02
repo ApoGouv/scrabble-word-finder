@@ -238,12 +238,19 @@
         <Loader v-if="isLoading" />
 
         <!-- Tiles, Input and Modes -->
-        <div class="form-container flex flex-col md:flex-row gap-6 justify-between items-start">
+        <div 
+          class="form-container flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap gap-y-6 justify-between items-start"
+        >
+
           <!-- App modes -->
-          <Modes :currentMode="currentMode" @changeMode="changeMode" />
+          <div class="modes-wrapper w-full md:w-1/2 md:px-2">
+            <Modes :currentMode="currentMode" @changeMode="changeMode" />
+          </div>
 
           <!-- Letter Tile Grid -->
-          <div class="tile-grid grid grid-cols-6 md:grid-cols-8 gap-2 w-full max-w-lg">
+          <div 
+              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3 w-full md:w-1/2 md:px-2 max-w-lg"
+            >
             <LetterTile
               v-for="tile in letterData"
               :key="tile.letter"
@@ -251,15 +258,15 @@
               :points="tile.points"
               :isDisabled="currentMode === 'validate' && tile.letter === '*'"
               @click="(event: Event) => handleTileClick(tile.letter, event)"
-              class="w-12 h-12 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
+              class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
             />
           </div>
 
-          <div class="flex flex-col gap-4 w-full max-w-lg">
+          <div class="scrabble-input-and-submit-wrapper flex flex-col gap-4 w-full md:w-full md:max-w-none md:px-2 lg:max-w-lg">
             <div class="scrabble-input-wrapper">
               <input
                 type="text"
-                class="scrabble-input p-3 text-xl border border-teal-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                class="scrabble-input p-2 text-md md:p-3 md:text-xl border border-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 v-model="inputWord"
                 :placeholder="
                   currentMode === 'searchAnagram'
@@ -312,26 +319,7 @@
 </template>
 
 <style scoped>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-  }
-
   .tile-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    /* max-width: 600px; */
   }
 
   .scrabble-input-wrapper {
@@ -342,12 +330,9 @@
   }
 
   .scrabble-input {
-    font-size: 1.5rem;
-    padding: 10px;
     width: 100%;
     max-width: 100%;
     height: 3rem;
-    border: 2px solid #ddd;
     border-radius: 5px;
     margin: 19px 0;
     box-sizing: border-box;
