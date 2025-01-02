@@ -13,6 +13,7 @@
     validateInput,
     resetLetterCounts,
     addLetterToInput,
+    isElementInViewport,
   } from './utils/appHelpers';
   import { validateWord } from '@/api/wordValidation';
   import { searchAnagrams } from '@/api/searchAnagrams';
@@ -209,6 +210,20 @@
       // Add logic to search for anagrams
       const anagrams = await searchAnagrams(trimmedInput, toast, isLoading);
       processAnagramResults(trimmedInput, anagrams);
+    }
+
+    // Focus on the results wrapper if it exists and is not visible in the viewport
+    const resultsWrapper = document.getElementById('results-wrapper');
+
+    if (resultsWrapper) {
+      const isInView = isElementInViewport(resultsWrapper);
+
+      if (!isInView) {
+        resultsWrapper.setAttribute('tabindex', '-1'); // Temporarily make it focusable
+        resultsWrapper.focus();
+        resultsWrapper.blur(); // Optionally remove focus immediately after scrolling
+        resultsWrapper.removeAttribute('tabindex'); // Clean up tabindex
+      }
     }
   };
 </script>

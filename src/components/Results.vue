@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="results bg-gray-800 text-white p-6 rounded-lg shadow-md">
+  <div id="results-wrapper" class="results bg-gray-800 text-white p-6 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold text-gray-100 mb-4">Results</h2>
 
     <!-- Handle validation mode -->
