@@ -333,8 +333,6 @@
 
   .scrabble-input-wrapper {
     display: flex;
-    gap: 10px;
-    margin: 10px 0;
     position: relative;
   }
 
@@ -343,7 +341,6 @@
     max-width: 100%;
     height: 3rem;
     border-radius: 5px;
-    margin: 19px 0;
     box-sizing: border-box;
     position: relative;
     transition: all 0.3s ease;
