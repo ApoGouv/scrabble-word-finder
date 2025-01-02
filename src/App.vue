@@ -9,13 +9,16 @@
   import Loader from '@/components/Loader.vue';
   import GitHubRibbon from '@/components/GitHubRibbon.vue'
   import {
-    letterData,
     validateTileClick,
     validateInput,
     resetLetterCounts,
     addLetterToInput,
     isElementInViewport,
   } from './utils/appHelpers';
+  import {
+    letterData,
+    englishToGreekMap,
+  } from './utils/letterData';
   import { validateWord } from '@/api/wordValidation';
   import { searchAnagrams } from '@/api/searchAnagrams';
   import { results, processValidationResult, processAnagramResults } from '@/utils/resultsHelpers';
@@ -41,7 +44,7 @@
 
   // Handle keyboard key presses
   const handleKeyPress = (event: KeyboardEvent) => {
-    const key = event.key.toUpperCase();
+    let key = event.key.toUpperCase();
 
     if (
       key === 'BACKSPACE' ||
@@ -86,6 +89,12 @@
       return;
     }
 
+    // Map English letter to Greek letter if available
+    if (englishToGreekMap[key]) {
+      key = englishToGreekMap[key];
+    }
+
+    // Check if the key is a valid Greek letter
     const isValidLetter = letterData.some((tile) => tile.letter === key);
     if (!isValidLetter) return;
 
