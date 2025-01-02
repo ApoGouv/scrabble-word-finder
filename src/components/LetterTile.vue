@@ -45,18 +45,11 @@
 <style scoped>
   .letter-tile {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    margin: 5px;
-    padding: 0.8em;
+    /* width: 60px;
+    height: 60px; */
     background-color: #f0f0f0;
     border: 2px solid #ddd;
     border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
     cursor: pointer;
     user-select: none;
     position: relative;
@@ -84,7 +77,6 @@
 
   .letter {
     font-size: 24px;
-    margin-bottom: 4px;
     color: #000000;
     font-weight: 600;
     transition: color 0.2s ease;
@@ -92,6 +84,7 @@
   .points {
     font-size: 14px;
     color: #888;
+    font-weight: bold;
     position: absolute;
     bottom: 0;
     right: 4px;

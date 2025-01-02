@@ -7,13 +7,18 @@
   import Modes from '@/components/Modes.vue';
   import Results from '@/components/Results.vue';
   import Loader from '@/components/Loader.vue';
+  import GitHubRibbon from '@/components/GitHubRibbon.vue'
   import {
-    letterData,
     validateTileClick,
     validateInput,
     resetLetterCounts,
     addLetterToInput,
+    isElementInViewport,
   } from './utils/appHelpers';
+  import {
+    letterData,
+    englishToGreekMap,
+  } from './utils/letterData';
   import { validateWord } from '@/api/wordValidation';
   import { searchAnagrams } from '@/api/searchAnagrams';
   import { results, processValidationResult, processAnagramResults } from '@/utils/resultsHelpers';
@@ -39,7 +44,7 @@
 
   // Handle keyboard key presses
   const handleKeyPress = (event: KeyboardEvent) => {
-    const key = event.key.toUpperCase();
+    let key = event.key.toUpperCase();
 
     if (
       key === 'BACKSPACE' ||
@@ -84,6 +89,12 @@
       return;
     }
 
+    // Map English letter to Greek letter if available
+    if (englishToGreekMap[key]) {
+      key = englishToGreekMap[key];
+    }
+
+    // Check if the key is a valid Greek letter
     const isValidLetter = letterData.some((tile) => tile.letter === key);
     if (!isValidLetter) return;
 
@@ -105,7 +116,7 @@
   });
 
   // Handle tile clicks or key presses: add the letter to the input
-  const handleTileClick = (letter: string) => {
+  const handleTileClick = (letter: string, event?: Event) => {
     const letterInfo = letterData.find((tile) => tile.letter === letter);
 
     const error = validateTileClick(
@@ -132,7 +143,18 @@
     }
 
     // Shift focus to the input field
-    inputField.value?.focus();
+    // inputField.value?.focus();
+
+    // Remove focus from the clicked tile
+    if (event?.target instanceof HTMLElement) {
+      const buttonElement = event.target.closest('button');
+  
+      // Check if the target itself is a button or if a button was found as an ancestor
+      if (buttonElement && buttonElement.tagName === 'BUTTON') {
+        // Remove focus from the button
+        buttonElement.blur();
+      }
+    }
   };
 
   // Watch the input field to ensure no more than 8 letters
@@ -199,6 +221,20 @@
       const anagrams = await searchAnagrams(trimmedInput, toast, isLoading);
       processAnagramResults(trimmedInput, anagrams);
     }
+
+    // Focus on the results wrapper if it exists and is not visible in the viewport
+    const resultsWrapper = document.getElementById('results-wrapper');
+
+    if (resultsWrapper) {
+      const isInView = isElementInViewport(resultsWrapper);
+
+      if (!isInView) {
+        resultsWrapper.setAttribute('tabindex', '-1'); // Temporarily make it focusable
+        resultsWrapper.focus();
+        resultsWrapper.blur(); // Optionally remove focus immediately after scrolling
+        resultsWrapper.removeAttribute('tabindex'); // Clean up tabindex
+      }
+    }
   };
 </script>
 
@@ -211,28 +247,35 @@
         <Loader v-if="isLoading" />
 
         <!-- Tiles, Input and Modes -->
-        <div class="form-container flex flex-col md:flex-row gap-6 justify-between items-start">
+        <div 
+          class="form-container flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap gap-y-6 justify-between items-start"
+        >
+
           <!-- App modes -->
-          <Modes :currentMode="currentMode" @changeMode="changeMode" />
+          <div class="modes-wrapper w-full md:w-1/2 md:px-2">
+            <Modes :currentMode="currentMode" @changeMode="changeMode" />
+          </div>
 
           <!-- Letter Tile Grid -->
-          <div class="tile-grid grid grid-cols-6 md:grid-cols-8 gap-2 w-full max-w-lg">
+          <div 
+              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3 w-full md:w-1/2 md:px-2 max-w-lg"
+            >
             <LetterTile
               v-for="tile in letterData"
               :key="tile.letter"
               :letter="tile.letter"
               :points="tile.points"
               :isDisabled="currentMode === 'validate' && tile.letter === '*'"
-              @click="handleTileClick(tile.letter)"
-              class="w-12 h-12 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
+              @click="(event: Event) => handleTileClick(tile.letter, event)"
+              class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 flex items-center justify-center bg-teal-600 text-white rounded-lg shadow-md cursor-pointer hover:bg-teal-500"
             />
           </div>
 
-          <div class="flex flex-col gap-4 w-full max-w-lg">
+          <div class="scrabble-input-and-submit-wrapper flex flex-col gap-4 w-full md:w-full md:max-w-none md:px-2 lg:max-w-lg">
             <div class="scrabble-input-wrapper">
               <input
                 type="text"
-                class="scrabble-input p-3 text-xl border border-teal-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                class="scrabble-input p-2 text-md md:p-3 md:text-xl border border-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 v-model="inputWord"
                 :placeholder="
                   currentMode === 'searchAnagram'
@@ -272,30 +315,20 @@
     </div>
 
     <Footer></Footer>
+
+    <!-- GitHub Ribbon -->
+    <GitHubRibbon 
+      title="Check out the source code on GitHub"
+      repoUrl="https://github.com/ApoGouv/scrabble-word-finder"
+      :svgFill="'rgba(255, 255, 255, 0.3)'" 
+      :svgColor="'rgba(21, 21, 19, 1)'" 
+      :showMatrix="true"
+    />
   </div>
 </template>
 
 <style scoped>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-  }
-
   .tile-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    /* max-width: 600px; */
   }
 
   .scrabble-input-wrapper {
@@ -306,12 +339,9 @@
   }
 
   .scrabble-input {
-    font-size: 1.5rem;
-    padding: 10px;
     width: 100%;
     max-width: 100%;
     height: 3rem;
-    border: 2px solid #ddd;
     border-radius: 5px;
     margin: 19px 0;
     box-sizing: border-box;

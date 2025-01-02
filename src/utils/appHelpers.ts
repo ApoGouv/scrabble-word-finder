@@ -2,39 +2,6 @@ import type { Ref } from 'vue';
 import { logger } from '@/utils/logger';
 
 /**
- * Letter data for Greek Scrabble
- * Includes points and maximum counts for each letter
- * @see https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Greek
- */
-export const letterData = [
-  { letter: 'Α', points: 1, count: 12 },
-  { letter: 'Β', points: 8, count: 1 },
-  { letter: 'Γ', points: 4, count: 2 },
-  { letter: 'Δ', points: 4, count: 2 },
-  { letter: 'Ε', points: 1, count: 8 },
-  { letter: 'Ζ', points: 10, count: 1 },
-  { letter: 'Η', points: 1, count: 7 },
-  { letter: 'Θ', points: 10, count: 1 },
-  { letter: 'Ι', points: 1, count: 8 },
-  { letter: 'Κ', points: 2, count: 4 },
-  { letter: 'Λ', points: 3, count: 3 },
-  { letter: 'Μ', points: 3, count: 3 },
-  { letter: 'Ν', points: 1, count: 6 },
-  { letter: 'Ξ', points: 10, count: 1 },
-  { letter: 'Ο', points: 1, count: 9 },
-  { letter: 'Π', points: 2, count: 4 },
-  { letter: 'Ρ', points: 2, count: 5 },
-  { letter: 'Σ', points: 1, count: 7 },
-  { letter: 'Τ', points: 1, count: 8 },
-  { letter: 'Υ', points: 2, count: 4 },
-  { letter: 'Φ', points: 8, count: 1 },
-  { letter: 'Χ', points: 8, count: 1 },
-  { letter: 'Ψ', points: 10, count: 1 },
-  { letter: 'Ω', points: 3, count: 3 },
-  { letter: '*', points: 0, count: 2 }, // Wildcard
-];
-
-/**
  * Validate tile click based on mode and constraints
  */
 export function validateTileClick(
@@ -101,8 +68,30 @@ export function addLetterToInput(
 
 // Greek alphabet letters
 export const GREEK_LETTERS = [
-  "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", 
-  "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
+  'Α',
+  'Β',
+  'Γ',
+  'Δ',
+  'Ε',
+  'Ζ',
+  'Η',
+  'Θ',
+  'Ι',
+  'Κ',
+  'Λ',
+  'Μ',
+  'Ν',
+  'Ξ',
+  'Ο',
+  'Π',
+  'Ρ',
+  'Σ',
+  'Τ',
+  'Υ',
+  'Φ',
+  'Χ',
+  'Ψ',
+  'Ω',
 ];
 
 // Helper function to generate all combinations of a given length
@@ -132,7 +121,7 @@ export function getAlphagram(input: string): string {
 
 // Function to replace wildcards and generate all possible combinations
 function replaceWildcards(letters: string[]): string[][] {
-  const wildcardIndex = letters.indexOf("*");
+  const wildcardIndex = letters.indexOf('*');
 
   if (wildcardIndex === -1) {
     // No wildcards, return the original letters as a single combination
@@ -147,7 +136,6 @@ function replaceWildcards(letters: string[]): string[][] {
     combinations.push(...replaceWildcards(newCombination)); // Recursive for multiple wildcards
   }
 
-  
   logger.log('replaceWildcards > combinations: ', combinations);
 
   return combinations;
@@ -177,4 +165,33 @@ export function getUniqueAlphagrams(
 
   // Convert the Set to an array and return it
   return Array.from(uniqueAlphagrams);
+}
+
+export function getCurrentFocusedElement() {
+  // Try to get the currently focused element
+  let focusedElement = document.activeElement;
+
+  // Check if the focused element is the body or if no element is focused
+  if (!focusedElement || focusedElement === document.body) {
+    // Use :focus pseudo-class as a fallback
+    focusedElement = document.querySelector(':focus') || null;
+  }
+
+  // Log the currently focused element
+  console.log('Currently focused element:', focusedElement);
+
+  // Return the focused element or null if none is found
+  return focusedElement;
+}
+
+// Checks if an element is in the viewport
+export function isElementInViewport(element: HTMLElement): boolean {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
 }
