@@ -7,6 +7,7 @@
   import Modes from '@/components/Modes.vue';
   import Results from '@/components/Results.vue';
   import Loader from '@/components/Loader.vue';
+  import GitHubRibbon from '@/components/GitHubRibbon.vue'
   import {
     letterData,
     validateTileClick,
@@ -298,6 +299,15 @@
     </div>
 
     <Footer></Footer>
+
+    <!-- GitHub Ribbon -->
+    <GitHubRibbon 
+      title="Check out the source code on GitHub"
+      repoUrl="https://github.com/ApoGouv/scrabble-word-finder"
+      :svgFill="'rgba(255, 255, 255, 0.3)'" 
+      :svgColor="'rgba(21, 21, 19, 1)'" 
+      :showMatrix="true"
+    />
   </div>
 </template>
 
