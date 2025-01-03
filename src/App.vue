@@ -242,7 +242,7 @@
   <div class="min-h-screen flex flex-col">
     <Header></Header>
 
-    <div class="app-container container mx-auto px-4 py-8 flex-1">
+    <div class="app-container container mx-auto px-4 py-8 flex flex-col gap-8 flex-1">
         <!-- Loader -->
         <Loader v-if="isLoading" />
 
@@ -328,9 +328,6 @@
 </template>
 
 <style scoped>
-  .tile-grid {
-  }
-
   .scrabble-input-wrapper {
     display: flex;
     position: relative;
