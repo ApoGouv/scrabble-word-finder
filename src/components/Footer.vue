@@ -1,5 +1,26 @@
 <script setup lang="ts">
   import LineMdCoffeeHalfEmptyFilledLoop from '@/icons/Coffee.vue'
+  import { ModalsContainer, useModal } from 'vue-final-modal';
+  import KeyboardBindingsModal from '@/components/KeyboardBindingsModal.vue';
+  import AboutModal from '@/components/AboutModal.vue';
+
+  const { open: openModalKeyboardBindings, close: closeModalKeyboardBindings } = useModal({
+    component: KeyboardBindingsModal,
+    attrs: {
+      onClose() {
+        closeModalKeyboardBindings()
+      },
+    },
+  });
+  
+  const { open: openModalAbout, close: closeModalAbout } = useModal({
+    component: AboutModal,
+    attrs: {
+      onClose() {
+        closeModalAbout()
+      },
+    },
+  });
 </script>
 
 
@@ -11,6 +32,7 @@
         <span class="copyright-text">
           &copy; 2024 Scrabble Word Finder. All rights reserved.
         </span>
+
         <span class="powered-text ml-0 md:ml-1 italic inline-flex items-center">
           Made by&nbsp;
           <a
@@ -24,6 +46,13 @@
         </span>
       </div>
 
+      <!-- Keyboard Shortcuts and About Links -->
+      <div class="text-center md:text-left space-x-4">
+        <a href="#" @click.prevent="openModalKeyboardBindings" class="text-teal-200 hover:text-teal-300">Keyboard Shortcuts</a>
+        <span>|</span>
+        <a href="#" @click.prevent="openModalAbout" class="text-teal-200 hover:text-teal-300">About</a>
+      </div>
+
       <!-- GitHub Badge Link -->
       <div class="flex space-x-4 text-center md:text-right">
         <a href="https://github.com/ApoGouv/scrabble-word-finder" target="_blank" rel="noopener noreferrer" class="github-corner" aria-label="View source on GitHub">
@@ -31,5 +60,8 @@
         </a>
       </div>
     </div>
+
   </footer>
+
+  <ModalsContainer />
 </template>
