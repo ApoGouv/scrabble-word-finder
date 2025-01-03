@@ -8,6 +8,8 @@
   import Results from '@/components/Results.vue';
   import Loader from '@/components/Loader.vue';
   import GitHubRibbon from '@/components/GitHubRibbon.vue'
+  import BackspaceOutline from '@/icons/BackspaceOutline.vue';
+  import DeleteOutline from '@/icons/DeleteOutline.vue';
   import {
     validateTileClick,
     validateInput,
@@ -52,18 +54,13 @@
       key === 'DEL' ||
       ((event.ctrlKey || event.metaKey) && key === 'Z')
     ) {
-      if (inputWord.value.length > 0) {
-        const lastChar = inputWord.value.slice(-1);
-        inputWord.value = inputWord.value.slice(0, -1);
-
-        if (currentMode.value === 'searchAnagram') {
-          // Decrement count for removed character
-          letterCounts.value[lastChar] = Math.max(
-            letterCounts.value[lastChar] - 1,
-            0
-          );
-        }
-        toast.info('Removed last character.');
+      // removeLastCharacter();
+      // Trigger click on remove-last-button
+      const removeButton = document.querySelector('.remove-last-button') as HTMLElement;
+      if (removeButton) {
+        removeButton.dispatchEvent(new Event('click'));
+        removeButton.classList.add('hovered');
+        setTimeout(() => removeButton.classList.remove('hovered'), 300); // Match hover duration
       }
       return;
     }
@@ -187,10 +184,29 @@
     toast.info(modeMessage);
   };
 
+  // Clears the input completely
   const clearInput = () => {
     inputWord.value = '';
     resetLetterCounts(letterCounts.value);
     toast.info('Input cleared.');
+  };
+
+  // Removes the last character from the input
+  const removeLastCharacter = () => {
+    if (inputWord.value.length > 0) {
+      const lastChar = inputWord.value.slice(-1);
+      inputWord.value = inputWord.value.slice(0, -1);
+
+      if (currentMode.value === 'searchAnagram') {
+        // Decrement count for removed character
+        letterCounts.value[lastChar] = Math.max(
+          letterCounts.value[lastChar] - 1,
+          0
+        );
+      }
+
+      toast.info('Removed last character.');
+    }
   };
 
   // Handle submission of the input
@@ -286,6 +302,21 @@
                 aria-label="Read only input field for letters or word"
                 ref="inputField"
               />
+
+              <!-- Remove Last Character Button -->
+              <button
+                v-if="inputWord.length > 0"
+                class="remove-last-button text-xl"
+                @click="removeLastCharacter"
+                title="Remove Last Character"
+                aria-label="Remove the last character from the input field"
+              >
+                <BackspaceOutline 
+                  customClass="icon w-6 h-6"
+                />
+              </button>
+
+              <!-- Clear All Input Button -->
               <button
                 v-if="inputWord.length > 0"
                 class="clear-button text-xl"
@@ -293,9 +324,12 @@
                 title="Clear Input"
                 aria-label="Clear the input field"
               >
-                ✖
+                <DeleteOutline 
+                  customClass="icon w-6 h-6"
+                />
               </button>
             </div>
+
             <div class="scrabble-submit-wrapper">
               <button
                 :disabled="!inputWord"
@@ -349,15 +383,16 @@
     box-shadow: 0 0 8px rgba(42, 157, 143, 0.5);
   }
 
-  .clear-button {
-    background: #f44336;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+  .clear-button,
+  .remove-last-button {
+    background: none;
+    color: #f44336;
+    border: 1px solid #f44336;
+    border-radius: 4px;
     padding: 0.5rem;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     position: absolute;
     top: 50%;
     right: 8px;
@@ -366,9 +401,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  .clear-button:hover {
-    background: #e53935;
+  .clear-button {
+    right: 8px;
+  }
+
+  .remove-last-button {
+    /* Spacing between buttons */
+    right: 50px; 
+  }
+
+  .clear-button:hover,
+  .remove-last-button:hover,
+  .remove-last-button.hovered {
+    background-color: rgba(244, 67, 54, 0.2);
+    background-color: #f44336;
+    color: #ffffff;
   }
 </style>
