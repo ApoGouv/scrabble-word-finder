@@ -93,6 +93,8 @@
 </template>
 
 <script lang="ts">
+  import type { PropType } from 'vue';
+
   /**
    * Coffee icon
    * @see https://icones.js.org/collection/all?s=coffee&icon=line-md:coffee-filled-loop
@@ -105,8 +107,8 @@
         default: '',
       },
       customStyle: {
-        type: Object,
-        default: () => ({}),
+        type: [String, Object] as PropType<string | Record<string, any>>,
+        default: '',
       },
     },
   };
