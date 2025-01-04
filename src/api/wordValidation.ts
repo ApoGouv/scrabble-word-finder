@@ -1,5 +1,6 @@
 import idb from '@/api/idb';
 import { fetchWordsByLetter } from '@/api/dataFetcher';
+import { logger } from '@/utils/logger';
 
 export async function validateWord(
   word: string,
@@ -16,7 +17,7 @@ export async function validateWord(
     let cachedWordData = await idb.getWord(word);
 
     if (cachedWordData) {
-      console.log('Word found in cached data and is Valid!', {
+      logger.log('Word found in cached data and is Valid!', {
         word,
         cachedWordData,
       });
@@ -36,14 +37,14 @@ export async function validateWord(
     // Validate the word again after caching
     cachedWordData = await idb.getWord(word);
     if (cachedWordData) {
-      console.log('Word data fetched and cached and word is Valid!!', {
+      logger.log('Word data fetched and cached and word is Valid!!', {
         word,
         cachedWordData,
       });
       toast.success('Word is valid!');
       return cachedWordData;
     } else {
-      console.log('Word data fetched and cached but word is Invalid.', {
+      logger.log('Word data fetched and cached but word is Invalid.', {
         word,
         cachedWordData,
       });
