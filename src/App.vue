@@ -48,6 +48,11 @@
   const handleKeyPress = (event: KeyboardEvent) => {
     let key = event.key.toUpperCase();
 
+    if ((event.ctrlKey || event.metaKey) && key === 'R') {
+      // Do nothing, we just let browser refresh the page.
+      return;
+    }
+
     if (
       key === 'BACKSPACE' ||
       key === 'DELETE' ||
