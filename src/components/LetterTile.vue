@@ -76,9 +76,11 @@
   }
 
   .letter {
+    --ltr-shadow-rgb: 42, 31, 27; 
     font-size: 24px;
-    color: #000000;
+    color: #2A1F1B;
     font-weight: 600;
+    text-shadow: 1px 1px 1px rgba(var(--ltr-shadow-rgb), 0.9), 0 -1px 1px rgba(var(--ltr-shadow-rgb), 0.2);
     transition: color 0.2s ease;
   }
   .points {
