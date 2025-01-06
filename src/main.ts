@@ -11,7 +11,7 @@ const app = createApp(App);
 // Optional toaster options
 const options: PluginOptions = {
   position: POSITION.BOTTOM_RIGHT,
-  timeout: 3000,
+  timeout: 2000,
   closeOnClick: true,
 };
 // Mount the toast plugin

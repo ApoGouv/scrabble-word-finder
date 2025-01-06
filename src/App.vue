@@ -109,12 +109,21 @@
     }
   };
 
+  const isMobileDevice = ref(false);
+
+  const updateIsMobileDevice = () => {
+    isMobileDevice.value = window.matchMedia('(max-width: 768px)').matches;
+  };
+
   // Add and remove the keyboard event listener
   onMounted(() => {
     window.addEventListener('keydown', handleKeyPress);
+    updateIsMobileDevice();
+    window.addEventListener('resize', updateIsMobileDevice);
   });
   onBeforeUnmount(() => {
     window.removeEventListener('keydown', handleKeyPress);
+    window.removeEventListener('resize', updateIsMobileDevice);
   });
 
   // Handle tile clicks or key presses: add the letter to the input
@@ -138,14 +147,11 @@
     }
 
     const result = addLetterToInput(letter, inputWord);
-    if (!result.success) {
+    if (!result.success && !isMobileDevice.value) {
       toast.error(result.message);
-    } else {
+    } else if (!isMobileDevice.value) {
       toast.success(result.message);
     }
-
-    // Shift focus to the input field
-    // inputField.value?.focus();
 
     // Remove focus from the clicked tile
     if (event?.target instanceof HTMLElement) {
@@ -260,7 +266,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="swh min-h-screen flex flex-col">
     <Header></Header>
 
     <div class="app-container container mx-auto px-4 py-8 flex flex-col gap-8 flex-1">
@@ -424,5 +430,26 @@
     background-color: rgba(244, 67, 54, 0.2);
     background-color: #f44336;
     color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    .swh .scrabble-input-and-submit-wrapper {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #1f2937;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2), /* Existing shadow */
+                    0 2px 10px rgba(0, 0, 0, 0.3); /* Top shadow for depth */
+        padding: 0.7rem 0.5rem 0.7rem 0.5rem;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .swh footer {
+      padding-bottom: 9rem;
+    }
   }
 </style>
