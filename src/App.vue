@@ -273,13 +273,13 @@
         >
 
           <!-- App modes -->
-          <div class="modes-wrapper w-full md:w-1/2 md:px-2">
+          <div class="modes-wrapper w-full md:w-1/2 md:px-2 md:max-w-md">
             <Modes :currentMode="currentMode" @changeMode="changeMode" />
           </div>
 
           <!-- Letter Tile Grid -->
           <div 
-              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3 w-full md:w-1/2 md:px-2 max-w-lg"
+              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 justify-center gap-2 md:gap-3 w-full md:px-2 max-w-xl min-w-fit md:w-1/2 md:max-w-sm lg:max-w-lg"
             >
             <LetterTile
               v-for="tile in letterData"
@@ -292,7 +292,7 @@
             />
           </div>
 
-          <div class="scrabble-input-and-submit-wrapper flex flex-col gap-4 w-full md:w-full md:max-w-none md:px-2 lg:max-w-lg">
+          <div class="scrabble-input-and-submit-wrapper flex flex-col gap-4 w-full md:w-full md:max-w-none md:px-2 lg:max-w-sm 2xl:max-w-lg">
             <div class="scrabble-input-wrapper">
               <input
                 type="text"
