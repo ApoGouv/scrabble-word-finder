@@ -1,26 +1,14 @@
 <script setup lang="ts">
+  import { ref } from 'vue'
   import LineMdCoffeeHalfEmptyFilledLoop from '@/icons/Coffee.vue'
-  import { ModalsContainer, useModal } from 'vue-final-modal';
-  import KeyboardBindingsModal from '@/components/KeyboardBindingsModal.vue';
-  import AboutModal from '@/components/AboutModal.vue';
+  import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
+  import About from '@/components/modals/About.vue'
+  import HowToUseModal from "@/components/modals/HowToUseModal.vue";
 
-  const { open: openModalKeyboardBindings, close: closeModalKeyboardBindings } = useModal({
-    component: KeyboardBindingsModal,
-    attrs: {
-      onClose() {
-        closeModalKeyboardBindings()
-      },
-    },
-  });
-  
-  const { open: openModalAbout, close: closeModalAbout } = useModal({
-    component: AboutModal,
-    attrs: {
-      onClose() {
-        closeModalAbout()
-      },
-    },
-  });
+  const showHowToUseModal = ref(false)
+  const showKeyboardModal = ref(false)
+  const showAboutModal = ref(false)
+
 </script>
 
 
@@ -44,13 +32,30 @@
             ApoGouv
           </a>, powered by <LineMdCoffeeHalfEmptyFilledLoop customClass="inline-flex mx-1" />
         </span>
-      </div>
+      </div>  
 
       <!-- Keyboard Shortcuts and About Links -->
       <div class="text-center md:text-left space-x-4">
-        <a href="#" @click.prevent="openModalKeyboardBindings" class="text-teal-200 hover:text-teal-300">Keyboard Shortcuts</a>
+        <button
+          @click="showHowToUseModal = true"
+          class="text-teal-200 hover:text-teal-300"
+        >
+        How to Use
+        </button>
         <span>|</span>
-        <a href="#" @click.prevent="openModalAbout" class="text-teal-200 hover:text-teal-300">About</a>
+        <button
+          @click="showKeyboardModal = true"
+          class="text-teal-200 hover:text-teal-300"
+        >
+          Keyboard Shortcuts
+        </button>
+        <span>|</span>
+        <button
+          @click="showAboutModal = true"
+          class="text-teal-200 hover:text-teal-300"
+        >
+          About
+        </button>
       </div>
 
       <!-- GitHub Badge Link -->
@@ -61,7 +66,19 @@
       </div>
     </div>
 
-  </footer>
+    <!-- Modals -->
+    <HowToUseModal
+      :isVisible="showHowToUseModal"
+      @close="showHowToUseModal = false"
+    />
+    <KeyboardShortcuts
+      :isVisible="showKeyboardModal"
+      @close="showKeyboardModal = false"
+    />
+    <About
+      :isVisible="showAboutModal"
+      @close="showAboutModal = false"
+    />
 
-  <ModalsContainer />
+  </footer>
 </template>

@@ -35,7 +35,7 @@
 <template>
   <a
     :href="repoUrl"
-    class="github-corner"
+    class="github-corner z-60"
     :title="title"
     :aria-label="title"
   >
@@ -74,7 +74,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 999;
   width: 80px;
   height: 80px;
   overflow: hidden;
