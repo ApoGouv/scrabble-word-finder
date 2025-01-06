@@ -6,6 +6,8 @@ import VuejsIcon from "@/icons/Vuejs.vue";
 import TypescriptIcon from "@/icons/Typescript.vue";
 import TailwindCSSIcon from "@/icons/TailwindCSS.vue";
 import NpmIcon from "@/icons/Npm.vue";
+import IndexedDBIcon from "@/icons/IndexedDB.vue";
+
 
 defineProps({
   isVisible: {
@@ -108,6 +110,17 @@ const onClose = () => emit("close");
               >Tailwind CSS</a
             >
           </li>
+          <li class="flex items-center space-x-3">
+            <IndexedDBIcon customClass="w-8 h-8" />
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-orange-500 underline"
+              title="IndexedDB - For storing JSON data locally after the first request."
+              >IndexedDB</a
+            >
+          </li>
         </ul>
       </section>
 
@@ -168,6 +181,7 @@ const onClose = () => emit("close");
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-orange-500 underline"
+                  title="Αποδεκτές Λέξεις 2-8 Γραμμάτων (1/9/2024)"
                 >
                   Αποδεκτές Λέξεις 2-8 Γραμμάτων (1/9/2024)
                 </a>
@@ -178,6 +192,7 @@ const onClose = () => emit("close");
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-orange-500 underline"
+                  title="Κρυμμένες Λέξεις, 30ή έκδοση, Φεβρουάριος 2020"
                 >
                   Κρυμμένες Λέξεις, 30ή έκδοση, Φεβρουάριος 2020
                 </a>
@@ -189,16 +204,27 @@ const onClose = () => emit("close");
             <a
               href="https://icones.js.org/"
               target="_blank"
+              rel="noopener noreferrer"
               class="text-orange-500 underline"
-              >icones.js.org</a
+              title="Icônes, an Icon Explorer with Instant searching built by @antfu, powered by Iconify"
             >
+              Icônes
+            </a>
             with custom icon components.
           </li>
           <li>
-            Special thanks to
-            <span class="text-orange-500 font-semibold">ChatGPT</span> for being
-            available 24/7, answering all development questions—even the weird
-            ones!
+            Hats off to 
+            <a
+              href="https://openai.com/chatgpt"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-orange-500 underline"
+              title="ChatGPT by OpenAI"
+            >
+              ChatGPT
+            </a> 
+            for providing after-hours support with helpful insights and suggestions during the development of this app.
+            Although it required corrections and guidance at times, its contributions were invaluable to the process.
           </li>
         </ul>
       </section>
