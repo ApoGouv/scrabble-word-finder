@@ -92,4 +92,11 @@
     right: 4px;
     transition: color 0.2s ease;
   }
+
+  @media (max-width: 768px) {
+    .points {
+      bottom: -3px;
+      right: 3px;
+    }
+  }
 </style>
