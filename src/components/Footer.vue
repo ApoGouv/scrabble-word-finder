@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import LineMdCoffeeHalfEmptyFilledLoop from '@/icons/Coffee.vue'
+  import CoffeeIcon from '@/icons/Coffee.vue'
   import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
   import About from '@/components/modals/About.vue'
   import HowToUseModal from "@/components/modals/HowToUseModal.vue";
@@ -30,7 +30,7 @@
             class="text-teal-200 hover:text-teal-300"
           >
             ApoGouv
-          </a>, powered by <LineMdCoffeeHalfEmptyFilledLoop customClass="inline-flex mx-1" />
+          </a>, powered by <CoffeeIcon customClass="inline-flex mx-1" />
         </span>
       </div>  
 

@@ -6,6 +6,9 @@
     width="1em"
     height="1em"
     viewBox="0 0 24 24"
+    role="img"
+    focusable="false"
+    aria-label="Coffee Cup Icon"
   >
     <title>Coffee</title>
     <path
@@ -96,11 +99,11 @@
   import type { PropType } from 'vue';
 
   /**
-   * Coffee icon
+   * line-md:coffee-filled-loop
    * @see https://icones.js.org/collection/all?s=coffee&icon=line-md:coffee-filled-loop
    */
   export default {
-    name: 'LineMdCoffeeHalfEmptyFilledLoop',
+    name: 'CoffeeIcon',
     props: {
       customClass: {
         type: String,
