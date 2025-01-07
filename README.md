@@ -1,17 +1,17 @@
 # Scrabble Word Finder
 
-Scrabble Word Finder is a web-based application designed for Greek Scrabble enthusiasts. It provides tools to validate words for their eligibility in official Hellenic Scrabble tournaments and find valid Scrabble words that can be formed from a given set of letters. The project is my final submission for the [CS50x](https://cs50.harvard.edu/x/) course by Harvard University, showcasing my learning and application of programming concepts.
+Scrabble Word Finder is a sophisticated web-based application tailored for Greek Scrabble enthusiasts. This tool offers robust functionalities to validate words for their eligibility in official Hellenic Scrabble tournaments and discover valid Scrabble words that can be formed from a given set of letters. Developed as the final project for the [CS50x](https://cs50.harvard.edu/x/) course by Harvard University, this project showcases a comprehensive application of modern web technologies and programming concepts.
 
 ## Features
 
-1. **Word Validation**: Check if a given Greek word is valid according to the official Hellenic Scrabble dictionary.
+1. **Word Validation**: Verify if a given Greek word is valid according to the official Hellenic Scrabble dictionary.
 2. **Anagram Search**: Input a set of Greek letters and find all valid words (2-8 letters long) that can be formed.
 3. **Wildcard Support**: Use one or two asterisks (*) as wildcards in Anagram Search to represent any letter.
 4. **User-Friendly Interface**:
    - Clickable Greek Scrabble tiles for letter input.
    - Dynamic results display with enhanced readability.
    - Loading indicator for processing tasks.
-5. **Offline Support**: Uses IndexedDB to cache data for faster, offline functionality.
+   - Keyboard shortcuts: 'Enter' for submission and 'BACKSPACE' to delete the last input entry.
 
 ---
 
@@ -33,7 +33,7 @@ This project is built using modern web technologies:
 The project also includes a Python-based preprocessing pipeline that prepares the data used in the app. This process involves extracting, cleaning, and organizing the Greek Scrabble word lists into JSON files, which are then served to the frontend. The pipeline performs the following tasks:
 
 1. **Data Extraction**: The Python scripts extract words from official Scrabble word lists (PDFs) and structure them into JSON files.
-2. **Data Cleanup**: The extracted data for the words references contain words with greater than 8 characters, do we filter those entries. 
+2. **Data Cleanup**: The extracted data for the words references contain words with greater than 8 characters, so we filter those entries. 
 3. **Word Merging**: The raw word lists are merged with references from dictionaries to provide comprehensive data.
 4. **Data Processing**: The data is processed to include additional metadata like word length, Scrabble points, and alphagrams (sorted letters).
 5. **Data Splitting**: The final processed data is split into smaller files for efficient retrieval in the web app.
@@ -97,8 +97,19 @@ After preprocessing, the data is automatically copied into the `public/data` fol
 
 ## Usage Instructions
 
-0. Run the Python data preparation scripts:
-    
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ApoGouv/scrabble-word-finder.git
+   cd scrabble-word-finder
+   ```
+
+0. Run the Python data preprocessing:
+   
+   - Move to the `data-prep` folder
+    ```bash
+   cd data-prep
+   ```
+
     > @see [Python packaging docs for: Create and Use Virtual Environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments) 
     
     For Windows: 
@@ -113,40 +124,39 @@ After preprocessing, the data is automatically copied into the `public/data` fol
     py -m pip install -r requirements.txt
     ```
 
-    - Ensure the data is copied to the public/data folder using the copyDataFiles.js script:
+    - Run the data preprocessing pipeline:
     ```bash
+    python pipeline.py 
+    python split_scrabble_data_for_web.py 
+    ```
+
+3. Ensure the data is copied to the public/data folder using the copyDataFiles.js script:
+    ```bash
+    cd ../
     npm run copy-scrabble-web-data
     ```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ApoGouv/scrabble-word-finder.git
-   cd scrabble-word-finder
-
-2. Install dependencies:
+4. Install npm dependencies:
     ```bash
     npm install
     ```
-3. Run the development server:
+
+5. Run the Vite development server and test the app:
     ```bash
     npm run dev
     ```
     Open the app at localhost:5173.
 
-4. Build the app for production:
+6. Build the app for production:
     ```bash
     npm run build
-    ```
-5. Deploy to GitHub Pages:
-    ```bash
-    npm run deploy
     ```
 
 ## Challenges and Solutions
 
 1. Data Caching:
    - Challenge: Fetching large JSON datasets could result in performance issues
-   - Solution: Implemented IndexedDB to store and retrieve data locally.
+   - Solution: Implemented IndexedDB to store and retrieve data locally. That way we only have to wait once for a JSON file we have not yet fetched and afterwards we are reading the data from IndexedDB.
   
 2. Wildcard Logic:
 
