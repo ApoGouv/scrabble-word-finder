@@ -6,6 +6,9 @@
     width="1em"
     height="1em"
     viewBox="0 0 32 32"
+    role="img"
+    focusable="false"
+    aria-label="Vite Icon"
   >
     <title>Vite</title>
     <g fill="none">

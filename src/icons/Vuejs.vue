@@ -6,8 +6,11 @@
     width="1em"
     height="1em"
     viewBox="0 0 32 32"
+    role="img"
+    focusable="false"
+    aria-label="Vue.js Icon"
   >
-    <title>Vuejs</title>
+    <title>Vue.js</title>
     <path
       fill="#41b883"
       d="M24.4 3.925H30l-14 24.15L2 3.925h10.71l3.29 5.6l3.22-5.6Z"

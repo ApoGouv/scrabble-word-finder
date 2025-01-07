@@ -6,6 +6,9 @@
     viewBox="0 0 32 32"
     width="1em"
     height="1em"
+    role="img"
+    focusable="false"
+    aria-label="IndexedDB Icon"
   >
     <title>IndexedDB</title>
     <!-- HTML5 Icon -->

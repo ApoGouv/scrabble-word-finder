@@ -6,6 +6,9 @@
     width="1em"
     height="1em"
     viewBox="0 0 32 32"
+    role="img"
+    focusable="false"
+    aria-label="TypeScript Icon"
   >
     <title>Typescript</title>
     <rect width="28" height="28" x="2" y="2" fill="#3178c6" rx="1.312"></rect>

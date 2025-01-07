@@ -79,6 +79,7 @@ onBeforeUnmount(() => {
             aria-modal="true"
             v-show="isVisible"
             aria-labelledby="modal-headline"
+            aria-describedby="modal-content"
             tabindex="-1"
             @click.stop
           >
@@ -98,7 +99,7 @@ onBeforeUnmount(() => {
             </button>
 
             <!-- Content Slot -->
-            <div class="modal-content max-h-[75vh] overflow-y-auto px-2 md:px-4">
+            <div id="modal-content" class="modal-content max-h-[75vh] overflow-y-auto px-2 md:px-4">
               <slot name="content"></slot>
             </div>
           </div>

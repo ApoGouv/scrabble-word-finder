@@ -6,6 +6,9 @@
     width="1em" 
     height="1em" 
     viewBox="0 0 24 24"
+    role="img"
+    focusable="false"
+    aria-label="Backspace Icon"
   >
     <title>Remove Last Character from Input</title>
     <path 
