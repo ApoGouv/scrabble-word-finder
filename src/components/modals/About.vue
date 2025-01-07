@@ -7,6 +7,8 @@ import TypescriptIcon from "@/icons/Typescript.vue";
 import TailwindCSSIcon from "@/icons/TailwindCSS.vue";
 import NpmIcon from "@/icons/Npm.vue";
 import IndexedDBIcon from "@/icons/IndexedDB.vue";
+import GithubIcon from "@/icons/Github.vue";
+import OpenAIChatGPTIcon from "@/icons/OpenAIChatGPT.vue";
 
 
 defineProps({
@@ -49,10 +51,10 @@ const onClose = () => emit("close");
         </p>
       </section>
 
-      <!-- Technologies Section -->
+      <!-- Technologies and Tools Section -->
       <section class="mb-6">
         <h3 class="text-lg font-semibold text-gray-300">
-          Technologies and Packages Used
+          Technologies and Tools
         </h3>
         <ul class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2 text-gray-300">
           <li class="flex items-center space-x-3">
@@ -121,13 +123,7 @@ const onClose = () => emit("close");
               >IndexedDB</a
             >
           </li>
-        </ul>
-      </section>
-
-      <!-- NPM Packages Section -->
-      <section class="mb-6">
-        <h3 class="text-lg font-semibold text-gray-300">npm Packages</h3>
-        <ul class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2 text-gray-300">
+          <!-- NPM Packages -->
           <li class="flex items-center space-x-3">
             <NpmIcon customClass="w-8 h-8" />
             <a
@@ -152,12 +148,40 @@ const onClose = () => emit("close");
               gh-pages
             </a>
           </li>
+
+          <!-- GitHub Repository -->
+          <li class="flex items-center space-x-3">
+            <GithubIcon customClass="w-8 h-8" />
+            <a
+              href="https://github.com/tholman/github-corners"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-orange-500 underline"
+              title="GitHub Corners - Used for the 'Fork me on GitHub' corner graphic, providing a modern and lightweight SVG solution."
+            >
+              GitHub Corners
+            </a>
+          </li>
+
+          <!-- OpenAI ChatGPT -->
+          <li class="flex items-center space-x-3">
+            <OpenAIChatGPTIcon customClass="w-8 h-8" />
+            <a
+              href="https://openai.com/chatgpt"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-orange-500 underline"
+              title="ChatGPT by OpenAI - For providing after-hours support with helpful insights and suggestions during the development of this app. Although it required corrections and guidance at times, its contributions were invaluable to the process."
+            >
+              ChatGPT
+            </a>
+          </li>
         </ul>
       </section>
 
-      <!-- Credits Section -->
+      <!-- Resources Section -->
       <section class="mb-6">
-        <h3 class="text-lg font-semibold text-gray-300">Credits</h3>
+        <h3 class="text-lg font-semibold text-gray-300">Resources</h3>
         <ul class="list-disc pl-5 mt-2 space-y-2 text-gray-300">
           <li>
             The word data follows the official Greek competitive Scrabble word
@@ -200,7 +224,7 @@ const onClose = () => emit("close");
             </ul>
           </li>
           <li>
-            SVG icons sourced from
+            SVG icons sourced from 
             <a
               href="https://icones.js.org/"
               target="_blank"
@@ -210,21 +234,7 @@ const onClose = () => emit("close");
             >
               Icônes
             </a>
-            with custom icon components.
-          </li>
-          <li>
-            Hats off to 
-            <a
-              href="https://openai.com/chatgpt"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-orange-500 underline"
-              title="ChatGPT by OpenAI"
-            >
-              ChatGPT
-            </a> 
-            for providing after-hours support with helpful insights and suggestions during the development of this app.
-            Although it required corrections and guidance at times, its contributions were invaluable to the process.
+             with custom icon components.
           </li>
         </ul>
       </section>
@@ -237,6 +247,24 @@ const onClose = () => emit("close");
           <span class="text-orange-500 font-semibold">Mattel Inc.</span>,
           distributed in the Greek market by
           <span class="text-orange-500 font-semibold">Mattel ΑΕΒΕ</span>.
+        </p>
+      </section>
+
+      <!-- Contact or Feedback Section -->
+      <section class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-300">Contact or Feedback</h3>
+        <p class="text-gray-300">
+          Your fedback is valuable! Visit our 
+          <a
+            href="https://github.com/ApoGouv/scrabble-word-finder"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-orange-500 underline"
+            title="Scrabble Word Finder GitHub Repository"
+          >
+            GitHub repository
+          </a> 
+          to submit feedback or report issues.
         </p>
       </section>
     </template>
