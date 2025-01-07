@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import CoffeeIcon from '@/icons/Coffee.vue'
+  import CircleIcon from '@/icons/Circle.vue'
   import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
   import About from '@/components/modals/About.vue'
   import HowToUseModal from "@/components/modals/HowToUseModal.vue";
@@ -34,28 +35,43 @@
         </span>
       </div>  
 
-      <!-- Keyboard Shortcuts and About Links -->
-      <div class="text-center md:text-left space-x-4">
-        <button
-          @click="showHowToUseModal = true"
-          class="text-teal-200 hover:text-teal-300"
-        >
-        How to Use
-        </button>
-        <span>|</span>
-        <button
-          @click="showKeyboardModal = true"
-          class="text-teal-200 hover:text-teal-300"
-        >
-          Keyboard Shortcuts
-        </button>
-        <span>|</span>
-        <button
-          @click="showAboutModal = true"
-          class="text-teal-200 hover:text-teal-300"
-        >
-          About
-        </button>
+      <!-- App Links -->
+      <div class="text-center md:text-left">
+        <ul class="flex flex-wrap justify-center md:justify-start items-center gap-2 md:gap-0">
+          <!-- First Link -->
+          <li class="flex items-center">
+            <button
+              @click="showHowToUseModal = true"
+              class="text-teal-200 hover:text-teal-300"
+            >
+              How to Use
+            </button>
+            <!-- Separator -->
+            <CircleIcon customClass="hidden md:inline w-2 h-2 mx-2 text-gray-300 fill-current" />
+          </li>
+
+          <!-- Second Link -->
+          <li class="flex items-center">
+            <button
+              @click="showKeyboardModal = true"
+              class="text-teal-200 hover:text-teal-300"
+            >
+              Keyboard Shortcuts
+            </button>
+            <!-- Separator -->
+            <CircleIcon customClass="hidden md:inline w-2 h-2 mx-2 text-gray-300 fill-current" />
+          </li>
+
+          <!-- Third Link -->
+          <li class="flex items-center">
+            <button
+              @click="showAboutModal = true"
+              class="text-teal-200 hover:text-teal-300"
+            >
+              About
+            </button>
+          </li>
+        </ul>
       </div>
 
       <!-- GitHub Badge Link -->
