@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.5.0",
   "type": "module",
-  "homepage": "https://apogouv.github.io/scrabble-word-finder/",
+  "homepage": "https://github.com/ApoGouv/scrabble-word-finder#readme",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
