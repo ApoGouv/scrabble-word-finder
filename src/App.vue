@@ -30,7 +30,6 @@
 
   const toast = useToast();
 
-  const inputField = ref<HTMLInputElement | null>(null);
   const inputWord = ref('');
   // 'validate' or 'searchAnagram'
   const modes = ['validate', 'searchAnagram'] as const;
@@ -155,10 +154,11 @@
     }
 
     const result = addLetterToInput(letter, inputWord);
-    if (!result.success && !isMobileDevice.value) {
+    if (!result.success /* && !isMobileDevice.value */) {
       toast.error(result.message);
     } else if (!isMobileDevice.value) {
-      toast.success(result.message);
+      // We don't show this on mobile devices to avoid cluttering the UI.
+      // toast.success(result.message);
     }
 
     // Remove focus from the clicked tile
@@ -307,20 +307,28 @@
           </div>
 
           <div class="scrabble-input-and-submit-wrapper flex flex-col gap-4 w-full md:w-full md:max-w-none md:px-2 lg:max-w-sm 2xl:max-w-lg">
-            <div class="scrabble-input-wrapper">
-              <input
-                type="text"
-                class="scrabble-input p-2 text-md md:p-3 md:text-xl border border-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                v-model="inputWord"
-                :placeholder="
-                  currentMode === 'searchAnagram'
+            <div class="scrabble-input-wrapper relative">
+              <div
+                class="scrabble-input p-2 text-md md:p-3 md:text-xl text-gray-300 border border-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-gray-800 flex items-center justify-start"
+                aria-label="Read-only input field for letters or word"
+              >
+                <span
+                  v-for="(char, index) in inputWord"
+                  :key="index"
+                  class="inline-block transition-transform duration-300"
+                  :class="{ 'animate-letter': index === inputWord.length - 1 }"
+                >
+                  {{ char }}
+                </span>
+                <span
+                  v-if="inputWord.length === 0"
+                  class="text-gray-400"
+                >
+                  {{ currentMode === 'searchAnagram'
                     ? 'Choose your letters (wildcards allowed)...'
-                    : 'Choose your word for validation...'
-                "
-                readonly
-                aria-label="Read only input field for letters or word"
-                ref="inputField"
-              />
+                    : 'Choose your word for validation...' }}
+                </span>
+              </div>
 
               <!-- Remove Last Character Button -->
               <button
@@ -419,6 +427,23 @@
   .scrabble-input:focus {
     border-color: #2a9d8f;
     box-shadow: 0 0 8px rgba(42, 157, 143, 0.5);
+  }
+
+  /* Animation for the last added letter */
+  @keyframes scaleUp {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-letter {
+    animation: scaleUp 0.4s ease-in-out;
   }
 
   .clear-button,
