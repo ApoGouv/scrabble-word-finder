@@ -2,7 +2,15 @@ import type { Ref } from 'vue';
 import { logger } from '@/utils/logger';
 
 /**
- * Validate tile click based on mode and constraints
+ * Validates a tile click based on the selected mode and constraints.
+ * Ensures that the letter clicked is allowed in the current mode, and enforces
+ * any applicable limits on letter usage.
+ *
+ * @param letter The clicked letter.
+ * @param mode The current mode of the application (either 'validate' or 'searchAnagram').
+ * @param counts A record of how many times each letter has been used.
+ * @param letterInfo Optional parameter that provides the letter's valid count (used for searchAnagram mode).
+ * @returns A string error message if validation fails, or null if the letter is valid.
  */
 export function validateTileClick(
   letter: string,
@@ -20,16 +28,20 @@ export function validateTileClick(
     return `Maximum ${letterInfo.count} ${letter}(s) allowed.`;
   }
 
-  return null; // No error
+  // No error
+  return null;
 }
 
 /**
- * Validate the input field value
+ * Validates the input word according to the selected mode.
+ * Ensures the input doesn't exceed the maximum word length and
+ * doesn't include wildcards in 'validate' mode.
+ *
+ * @param newVal The new value of the input field.
+ * @param mode The current mode of the application.
+ * @returns A string error message if validation fails, or null if the input is valid.
  */
-export function validateInput(
-  newVal: string,
-  mode: string
-): string | null {
+export function validateInput(newVal: string, mode: string): string | null {
   if (mode === 'validate' && newVal.includes('*')) {
     return 'Wildcard is not allowed in validate mode.';
   }
@@ -38,15 +50,28 @@ export function validateInput(
     return 'Maximum 8 letters allowed!';
   }
 
-  return null; // No error
+  // No error
+  return null;
 }
 
+/**
+ * Resets the letter counts to 0 for all letters.
+ * This is used to reset the letter selections state.
+ *
+ * @param letterCounts A record of the current counts of each letter.
+ */
 export const resetLetterCounts = (letterCounts: Record<string, number>) => {
   Object.keys(letterCounts).forEach((key) => (letterCounts[key] = 0));
 };
 
 /**
- * Add a letter to the input
+ * Adds a letter to the input word.
+ * This function checks if the current input word has reached
+ * the maximum length of 8 letters before adding a new letter.
+ *
+ * @param letter The letter to be added to the input word.
+ * @param inputWord The reference to the input word where the letter will be added.
+ * @returns An object containing the success status and a message describing the action.
  */
 export function addLetterToInput(
   letter: string,
@@ -54,6 +79,7 @@ export function addLetterToInput(
 ): { success: boolean; message: string } {
   if (inputWord.value.length < 8) {
     inputWord.value += letter;
+
     return {
       success: true,
       message: letter === '*' ? 'Wildcard added.' : `Letter '${letter}' added.`,
@@ -66,7 +92,9 @@ export function addLetterToInput(
   }
 }
 
-// Greek alphabet letters
+/**
+ * Greek alphabet letters, used for wildcard replacement and other logic
+ */
 export const GREEK_LETTERS = [
   'Α',
   'Β',
@@ -94,7 +122,14 @@ export const GREEK_LETTERS = [
   'Ω',
 ];
 
-// Helper function to generate all combinations of a given length
+/**
+ * Generates all possible combinations of a given length from a set of letters.
+ * This is used to create possible word combinations from selected letters.
+ *
+ * @param letters The array of letters to combine.
+ * @param length The desired length of each combination.
+ * @returns An array of all valid combinations.
+ */
 export function generateCombinations(
   letters: string[],
   length: number
@@ -115,11 +150,25 @@ export function generateCombinations(
   return combinations;
 }
 
+/**
+ * Sorts the letters of the input word in alphabetical order.
+ * This is useful for creating alphagrams.
+ *
+ * @param input The input word or combination of letters.
+ * @returns The alphagram (sorted string).
+ */
 export function getAlphagram(input: string): string {
   return input.toUpperCase().split('').sort().join('');
 }
 
-// Function to replace wildcards and generate all possible combinations
+/**
+ * Recursively replaces wildcards (*) in the provided letters with every Greek letter.
+ * This function generates all possible letter combinations
+ * considering wildcard replacements.
+ *
+ * @param letters The array of letters, potentially containing wildcards.
+ * @returns A 2D array of combinations with wildcards replaced by Greek letters.
+ */
 function replaceWildcards(letters: string[]): string[][] {
   const wildcardIndex = letters.indexOf('*');
 
@@ -141,7 +190,15 @@ function replaceWildcards(letters: string[]): string[][] {
   return combinations;
 }
 
-// Function to generate unique alphagrams for combinations of the letters
+/**
+ * Generates unique alphagrams from a set of letters, considering wildcards.
+ * The function replaces wildcards with all possible Greek letters and
+ * generates all valid combinations of the resulting set of letters.
+ *
+ * @param letters The letters to use for generating the alphagrams.
+ * @param minLength The minimum length of the combinations to generate (defaults to 2).
+ * @returns An array of unique alphagrams generated from the letters.
+ */
 export function getUniqueAlphagrams(
   letters: string,
   minLength: number = 2
@@ -155,10 +212,13 @@ export function getUniqueAlphagrams(
   for (const expandedCombo of expandedLetters) {
     // Generate combinations for each expanded set of letters
     for (let i = minLength; i <= expandedCombo.length; i++) {
-      const combinations = generateCombinations(expandedCombo, i); // Use existing function
+      // Generate all possible combinations of a given length from a set of letters.
+      const combinations = generateCombinations(expandedCombo, i);
       for (const combo of combinations) {
-        const alphagram = getAlphagram(combo); // Sort letters alphabetically
-        uniqueAlphagrams.add(alphagram); // Ensure uniqueness using a Set
+        // Sort letters alphabetically
+        const alphagram = getAlphagram(combo);
+        // Ensure uniqueness using a Set
+        uniqueAlphagrams.add(alphagram);
       }
     }
   }
@@ -167,6 +227,13 @@ export function getUniqueAlphagrams(
   return Array.from(uniqueAlphagrams);
 }
 
+/**
+ * Retrieves the currently focused element on the page.
+ * Useful when we need to check the focused element for keyboard events or
+ * remove focus from an element programmatically.
+ *
+ * @returns The currently focused DOM element, or null if none is focused.
+ */
 export function getCurrentFocusedElement() {
   // Try to get the currently focused element
   let focusedElement = document.activeElement;
@@ -178,13 +245,19 @@ export function getCurrentFocusedElement() {
   }
 
   // Log the currently focused element
-  console.log('Currently focused element:', focusedElement);
+  logger.log('Currently focused element:', focusedElement);
 
   // Return the focused element or null if none is found
   return focusedElement;
 }
 
-// Checks if an element is in the viewport
+/**
+ * Checks if an element is within the viewport.
+ * Used to determine if results `div` should be scrolled into view.
+ *
+ * @param element The DOM element to check.
+ * @returns True if the element is within the viewport, false otherwise.
+ */
 export function isElementInViewport(element: HTMLElement): boolean {
   const rect = element.getBoundingClientRect();
   return (
