@@ -1,6 +1,9 @@
 /**
  * Letter data for Greek Scrabble
- * Includes points and maximum counts for each letter
+ * This array contains the letter, its corresponding point value,
+ * and the maximum number of tiles available for each letter.
+ * The data follows the Greek letter distribution used in Scrabble.
+ *
  * @see https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Greek
  */
 export const letterData = [
@@ -31,30 +34,39 @@ export const letterData = [
   { letter: '*', points: 0, count: 2 }, // Wildcard
 ];
 
-// Map English letters to Greek letters based on Greek keyboard layout
+/**
+ * Maps English letters to their corresponding Greek letters based on
+ * the Greek keyboard layout.
+ * This map is used for converting English letters into Greek letters
+ * when english keyboard keys are being pressed.
+ *
+ * Note: The English letters are mapped to Greek letters considering
+ * their placement in the Greek keyboard layout.
+ * For example, English 'A' maps to Greek 'Α', English 'C' maps to Greek 'Ψ', etc.
+ */
 export const englishToGreekMap: Record<string, string> = {
-  A: 'Α',
-  B: 'Β',
-  C: 'Ψ',
-  D: 'Δ',
-  E: 'Ε',
-  F: 'Φ',
-  G: 'Γ',
-  H: 'Η',
-  I: 'Ι',
-  J: 'Ξ',
-  K: 'Κ',
-  L: 'Λ',
-  M: 'Μ',
-  N: 'Ν',
-  O: 'Ο',
-  P: 'Π',
-  R: 'Ρ',
-  S: 'Σ',
-  T: 'Τ',
-  U: 'Θ',
-  V: 'Ω',
-  X: 'Χ',
-  Y: 'Υ',
-  Z: 'Ζ',
+  A: 'Α', // English 'A' -> Greek 'Α'
+  B: 'Β', // English 'B' -> Greek 'Β'
+  C: 'Ψ', // English 'C' -> Greek 'Ψ'
+  D: 'Δ', // English 'D' -> Greek 'Δ'
+  E: 'Ε', // English 'E' -> Greek 'Ε'
+  F: 'Φ', // English 'F' -> Greek 'Φ'
+  G: 'Γ', // English 'G' -> Greek 'Γ'
+  H: 'Η', // English 'H' -> Greek 'Η'
+  I: 'Ι', // English 'I' -> Greek 'Ι'
+  J: 'Ξ', // English 'J' -> Greek 'Ξ'
+  K: 'Κ', // English 'K' -> Greek 'Κ'
+  L: 'Λ', // English 'L' -> Greek 'Λ'
+  M: 'Μ', // English 'M' -> Greek 'Μ'
+  N: 'Ν', // English 'N' -> Greek 'Ν'
+  O: 'Ο', // English 'O' -> Greek 'Ο'
+  P: 'Π', // English 'P' -> Greek 'Π'
+  R: 'Ρ', // English 'R' -> Greek 'Ρ'
+  S: 'Σ', // English 'S' -> Greek 'Σ'
+  T: 'Τ', // English 'T' -> Greek 'Τ'
+  U: 'Θ', // English 'U' -> Greek 'Θ'
+  V: 'Ω', // English 'V' -> Greek 'Ω'
+  X: 'Χ', // English 'X' -> Greek 'Χ'
+  Y: 'Υ', // English 'Y' -> Greek 'Υ'
+  Z: 'Ζ', // English 'Z' -> Greek 'Ζ'
 };
