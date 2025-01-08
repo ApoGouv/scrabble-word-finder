@@ -395,6 +395,7 @@
     <HowToUseModal
       :isVisible="showHowToUseModal"
       @close="showHowToUseModal = false"
+      @show-keyboard-shortcuts-modal="showKeyboardModal = true"
     />
     <KeyboardShortcuts
       :isVisible="showKeyboardModal"

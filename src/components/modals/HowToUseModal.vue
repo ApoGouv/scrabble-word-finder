@@ -10,9 +10,20 @@ defineProps({
 
 const emit = defineEmits<{
   (e: "close"): void;
+
+  // Event to open keyboard shortcuts modal
+  (e: "show-keyboard-shortcuts-modal"): void;
 }>();
 
 const onClose = () => emit("close");
+
+const onShowKeyboardShortcuts = () => {
+  // Close the current modal
+  emit("close");
+
+  // Open the keyboard shortcuts modal
+  emit("show-keyboard-shortcuts-modal");
+};
 </script>
 
 <template>
@@ -89,7 +100,7 @@ const onClose = () => emit("close");
           For a complete list of available keyboard shortcuts, check the 
           <button
             class="text-teal-200 hover:text-teal-300 underline"
-            @click="onClose"
+            @click="onShowKeyboardShortcuts"
           >
             Keyboard Shortcuts
           </button> link in the footer.
