@@ -9,6 +9,11 @@ const ALPHAGRAMS_TABLE = 'words_by_alphagram';
 const WORDS_TABLE = 'words_by_starting_letter';
 
 export default {
+  /**
+   * Gets the IndexedDB instance.
+   *
+   * @returns A promise that resolves to the IndexedDB instance.
+   */
   async getDb(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       if (DB) return resolve(DB);
@@ -16,7 +21,7 @@ export default {
       const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
       request.onerror = (e) => {
-        console.error('Error opening database', e);
+        logger.error('Error opening database', e);
         reject('Error');
       };
 
@@ -39,6 +44,12 @@ export default {
     });
   },
 
+  /**
+   * Adds words data to the WORDS_TABLE table.
+   *
+   * @param data - The data to be added to the table, an array of word entries.
+   * @returns A promise that resolves when the data is added.
+   */
   async addWordsTableData(data: any[]): Promise<void> {
     const db = await this.getDb();
 
@@ -53,6 +64,12 @@ export default {
     });
   },
 
+  /**
+   * Adds alphagrams data to the ALPHAGRAMS_TABLE table.
+   *
+   * @param data - A record of alphagrams and their associated words.
+   * @returns A promise that resolves when the data is added.
+   */
   async addAlphagramsTableData(data: Record<string, string[]>): Promise<void> {
     const db = await this.getDb();
 
@@ -69,6 +86,12 @@ export default {
     });
   },
 
+  /**
+   * Retrieves a word's data from the WORDS_TABLE table.
+   *
+   * @param word - The word to retrieve data for.
+   * @returns A promise that resolves to the word's data, or null if not found.
+   */
   async getWord(word: string): Promise<any | null> {
     const db = await this.getDb();
 
@@ -83,12 +106,17 @@ export default {
     });
   },
 
+  /**
+   * Checks if the ALPHAGRAMS_TABLE table is empty.
+   *
+   * @returns A promise that resolves to true if the table is empty, false otherwise.
+   */
   async checkIfAlphagramTableIsEmpty(): Promise<boolean> {
     const db = await this.getDb();
     const transaction = db.transaction([ALPHAGRAMS_TABLE], 'readonly');
-    const objectStore = transaction.objectStore(ALPHAGRAMS_TABLE);
+    const store = transaction.objectStore(ALPHAGRAMS_TABLE);
 
-    const countRequest = objectStore.count();
+    const countRequest = store.count();
 
     return new Promise((resolve, reject) => {
       countRequest.onsuccess = () => {
@@ -106,6 +134,13 @@ export default {
     });
   },
 
+  /**
+   * Retrieves words grouped by alphagram from the ALPHAGRAMS_TABLE table.
+   *
+   * @param alphagram - The alphagram to retrieve words for.
+   * @returns A promise that resolves to the words associated with the alphagram,
+   *          or null if not found.
+   */
   async getWordsByAlphagram(alphagram: string): Promise<string[] | null> {
     const db = await this.getDb();
 

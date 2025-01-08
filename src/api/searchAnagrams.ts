@@ -3,7 +3,14 @@ import { logger } from '@/utils/logger';
 import { fetchWordsByAlphagram } from '@/api/dataFetcher';
 import { getUniqueAlphagrams } from '@/utils/appHelpers';
 
-// Function to search for anagrams given a string
+/**
+ * Function to search for anagrams given a string of letters.
+ *
+ * @param letters - The string of letters for which to find anagrams.
+ * @param toast - The toast notification handler for error messages.
+ * @param isLoading - An object to control the loading state (used for showing a loader).
+ * @returns A promise that resolves to a record of grouped anagrams or null if no anagrams are found.
+ */
 export async function searchAnagrams(
   letters: string,
   toast: any,
@@ -87,9 +94,9 @@ export async function searchAnagrams(
     return sortedGroupedByLength;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error searching anagrams:', error.message);
+      logger.error('Error searching anagrams:', error.message);
     } else {
-      console.error('Error searching anagrams:', error);
+      logger.error('Error searching anagrams:', error);
     }
     toast.error('An error occurred while searching for anagrams.');
     return null;
