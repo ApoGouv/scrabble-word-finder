@@ -5,7 +5,7 @@
 
 
 <template>
-  <footer class="bg-teal-600 text-white py-4 mt-8 shadow-inner">
+  <footer class="bg-teal-600 text-white py-4 mt-4 shadow-inner">
     <div class="container mx-auto px-4 flex flex-col md:flex-row md:justify-between items-center space-y-4 md:space-y-0">
       <!-- Copyright Info -->
       <div class="text-sm text-gray-200 text-center md:text-left">

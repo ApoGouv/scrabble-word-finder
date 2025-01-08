@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div id="results-wrapper" class="results bg-gray-800 text-white p-6 rounded-lg shadow-md mt-10 flex-1 min-h-[230px] flex flex-col">
+  <div id="results-wrapper" class="results bg-gray-800 text-white p-6 rounded-lg shadow-md mt-6 flex-1 min-h-[230px] flex flex-col">
     <h2 class="text-2xl font-bold text-gray-100 mb-4">Results</h2>
 
     <!-- Handle validation mode -->
