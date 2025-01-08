@@ -293,7 +293,7 @@
 
           <!-- Letter Tile Grid -->
           <div 
-              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 justify-center gap-2 md:gap-3 w-full md:px-2 max-w-xl min-w-fit md:w-1/2 md:max-w-sm lg:max-w-lg"
+              class="tile-grid grid grid-cols-5 md:grid-cols-5 lg:grid-cols-6 justify-center justify-items-center gap-2 md:gap-3 w-full md:px-2 max-w-xl min-w-fit md:w-1/2 md:max-w-sm lg:max-w-lg"
             >
             <LetterTile
               v-for="tile in letterData"
