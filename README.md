@@ -261,13 +261,20 @@ We would like to extend our gratitude to the following resources and npm package
   - [Αποδεκτές Λέξεις 2-8 Γραμμάτων (1/9/2024)](http://greekscrabble.gr/wp-content/uploads/2024/08/2-8-2024_09_01.pdf)
   - [Κρυμμένες Λέξεις, 30ή έκδοση, Φεβρουάριος 2020](http://greekscrabble.gr/wp-content/uploads/2020/02/krymmenes30.pdf)
 
+
 ## Trademark Notice
 
 Scrabble™ (σκραμπλ) is a product and registered trademark of [Mattel Inc.](https://www.mattel.com/), distributed in the Greek market by [Mattel ΑΕΒΕ](http://www.mattel.gr).
 
+
 ## Contact or Feedback
 
 We value your feedback! If you have any suggestions, comments, or issues, please feel free to visit our [GitHub repository](https://github.com/ApoGouv/scrabble-word-finder) to submit your feedback or report any bugs.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## Conclusion
