@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ModalDialog from "@/components/ModalDialog.vue";
+import InfoIcon from '@/icons/Info.vue';
 import PythonIcon from "@/icons/Python.vue";
 import ViteIcon from "@/icons/Vite.vue";
 import VuejsIcon from "@/icons/Vuejs.vue";
@@ -27,7 +28,10 @@ const onClose = () => emit("close");
 
 <template>
   <ModalDialog :isVisible="isVisible" @close="onClose">
-    <template #title> About This App </template>
+    <template #title>
+      <InfoIcon class="w-5 h-5 inline-block mr-1" />
+      About This App
+    </template>
     <template #content>
       <!-- About Section -->
       <section class="mb-6">

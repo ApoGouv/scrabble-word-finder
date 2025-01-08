@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import InfoIcon from '@/icons/Info.vue';
+  import HelpIcon from '@/icons/Help.vue';
 </script>
 
 <template>
@@ -16,7 +16,7 @@
         @click="$emit('show-how-to-use-modal', true)"
         class="text-sm font-medium bg-teal-700 hover:bg-teal-800 px-4 py-2 rounded-md transition duration-200 shadow-sm"
       >
-        <InfoIcon class="w-5 h-5 inline-block mr-1" />
+        <HelpIcon class="w-5 h-5 inline-block mr-1" />
         <span class="hidden md:inline">
           How to Use
         </span>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ModalDialog from '@/components/ModalDialog.vue'
 import { englishToGreekMap } from '@/utils/letterData';
+import KeyboardIcon from '@/icons/Keyboard.vue';
 
 defineProps({
   isVisible: {
@@ -19,6 +20,7 @@ const onClose = () => emit('close')
 <template>
   <ModalDialog :isVisible="isVisible" @close="onClose">
     <template #title>
+      <KeyboardIcon class="w-5 h-5 inline-block mr-1" />
       Keyboard Shortcuts
     </template>
     <template #content>

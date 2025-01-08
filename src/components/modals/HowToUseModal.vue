@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ModalDialog from "@/components/ModalDialog.vue";
+import HelpIcon from '@/icons/Help.vue';
 
 defineProps({
   isVisible: {
@@ -28,7 +29,10 @@ const onShowKeyboardShortcuts = () => {
 
 <template>
   <ModalDialog :isVisible="isVisible" @close="onClose">
-    <template #title>How to Use</template>
+    <template #title>
+      <HelpIcon class="w-5 h-5 inline-block mr-1" />
+      How to Use
+    </template>
     <template #content>
       <section class="space-y-4 text-gray-300">
         <ol class="list-decimal pl-5 space-y-3">
