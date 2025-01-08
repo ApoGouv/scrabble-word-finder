@@ -70,7 +70,7 @@
 
 <style scoped>
 .github-corner {
-  display: block;
+  /* display: block; */
   position: absolute;
   top: 0;
   right: 0;
