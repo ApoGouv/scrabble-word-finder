@@ -1,12 +1,6 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
   import CoffeeIcon from '@/icons/Coffee.vue'
   import CircleIcon from '@/icons/Circle.vue'
-
-  const showHowToUseModal = ref(false)
-  const showKeyboardModal = ref(false)
-  const showAboutModal = ref(false)
-
 </script>
 
 
