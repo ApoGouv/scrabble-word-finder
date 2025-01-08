@@ -6,8 +6,17 @@
       <a href="#" class="text-lg font-bold text-white tracking-wide hover:text-teal-200">
         Scrabble Word Finder
       </a>
+      
+      <!-- How to Use Button -->
+      <button
+        @click="$emit('show-how-to-use-modal', true)"
+        class="text-sm font-medium bg-teal-700 hover:bg-teal-800 px-4 py-2 rounded-md transition duration-200 shadow-sm"
+      >
+        How to Use
+      </button>
+
       <!-- Horizontal Line for larger screens -->
-      <hr class="hidden lg:block border-l border-white opacity-20 h-6 mx-3" />
+      <hr class="hidden lg:block border-l border-teal-500 opacity-20 h-6 mx-3" />
     </div>
   </nav>
 </template>

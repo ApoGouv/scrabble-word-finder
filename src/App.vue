@@ -8,6 +8,11 @@
   import Results from '@/components/Results.vue';
   import Loader from '@/components/Loader.vue';
   import GitHubRibbon from '@/components/GitHubRibbon.vue'
+  import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
+  import About from '@/components/modals/About.vue'
+  import HowToUseModal from "@/components/modals/HowToUseModal.vue";
+  import { validateWord } from '@/api/wordValidation';
+  import { searchAnagrams } from '@/api/searchAnagrams';
   import BackspaceOutline from '@/icons/BackspaceOutline.vue';
   import DeleteOutline from '@/icons/DeleteOutline.vue';
   import {
@@ -21,8 +26,6 @@
     letterData,
     englishToGreekMap,
   } from './utils/letterData';
-  import { validateWord } from '@/api/wordValidation';
-  import { searchAnagrams } from '@/api/searchAnagrams';
   import { results, processValidationResult, processAnagramResults } from '@/utils/resultsHelpers';
 
   const toast = useToast();
@@ -43,6 +46,11 @@
   letterData.forEach(({ letter }) => {
     letterCounts.value[letter] = 0;
   });
+
+  // Init modals state
+  const showHowToUseModal = ref(false);
+  const showKeyboardModal = ref(false);
+  const showAboutModal = ref(false);
 
   // Handle keyboard key presses
   const handleKeyPress = (event: KeyboardEvent) => {
@@ -267,7 +275,7 @@
 
 <template>
   <div class="swh min-h-screen flex flex-col">
-    <Header></Header>
+    <Header @show-how-to-use-modal="showHowToUseModal = true"></Header>
 
     <div class="app-container container mx-auto px-4 py-8 flex flex-col gap-8 flex-1">
         <!-- Loader -->
@@ -359,7 +367,11 @@
         <Results :results="results" />
     </div>
 
-    <Footer></Footer>
+    <Footer 
+      @show-how-to-use-modal="showHowToUseModal = true"
+      @show-keyboard-shortcuts-modal="showKeyboardModal = true"
+      @show-about-modal="showAboutModal = true"
+    />
 
     <!-- GitHub Ribbon -->
     <GitHubRibbon 
@@ -368,6 +380,21 @@
       :svgFill="'rgba(255, 255, 255, 0.3)'" 
       :svgColor="'rgba(21, 21, 19, 1)'" 
       :showMatrix="true"
+      class="hidden lg:block"
+    />
+
+    <!-- Modals -->
+    <HowToUseModal
+      :isVisible="showHowToUseModal"
+      @close="showHowToUseModal = false"
+    />
+    <KeyboardShortcuts
+      :isVisible="showKeyboardModal"
+      @close="showKeyboardModal = false"
+    />
+    <About
+      :isVisible="showAboutModal"
+      @close="showAboutModal = false"
     />
   </div>
 </template>
@@ -442,7 +469,7 @@
         box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2), /* Existing shadow */
                     0 2px 10px rgba(0, 0, 0, 0.3); /* Top shadow for depth */
         padding: 0.7rem 0.5rem 0.7rem 0.5rem;
-        z-index: 1000;
+        z-index: 50;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;

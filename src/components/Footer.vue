@@ -2,9 +2,6 @@
   import { ref } from 'vue'
   import CoffeeIcon from '@/icons/Coffee.vue'
   import CircleIcon from '@/icons/Circle.vue'
-  import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
-  import About from '@/components/modals/About.vue'
-  import HowToUseModal from "@/components/modals/HowToUseModal.vue";
 
   const showHowToUseModal = ref(false)
   const showKeyboardModal = ref(false)
@@ -38,10 +35,10 @@
       <!-- App Links -->
       <div class="text-center md:text-left">
         <ul class="flex flex-wrap justify-center md:justify-start items-center gap-2 md:gap-0">
-          <!-- First Link -->
+          <!-- How to Use Button Link -->
           <li class="flex items-center">
             <button
-              @click="showHowToUseModal = true"
+              @click="$emit('show-how-to-use-modal')"
               class="text-teal-200 hover:text-teal-300"
             >
               How to Use
@@ -50,10 +47,10 @@
             <CircleIcon customClass="hidden md:inline w-2 h-2 mx-2 text-gray-300 fill-current" />
           </li>
 
-          <!-- Second Link -->
+          <!-- Keyboard Shortcuts Button Link -->
           <li class="flex items-center">
             <button
-              @click="showKeyboardModal = true"
+              @click="$emit('show-keyboard-shortcuts-modal')"
               class="text-teal-200 hover:text-teal-300"
             >
               Keyboard Shortcuts
@@ -62,10 +59,10 @@
             <CircleIcon customClass="hidden md:inline w-2 h-2 mx-2 text-gray-300 fill-current" />
           </li>
 
-          <!-- Third Link -->
+          <!-- About Button Link -->
           <li class="flex items-center">
             <button
-              @click="showAboutModal = true"
+              @click="$emit('show-about-modal')"
               class="text-teal-200 hover:text-teal-300"
             >
               About
@@ -81,20 +78,5 @@
         </a>
       </div>
     </div>
-
-    <!-- Modals -->
-    <HowToUseModal
-      :isVisible="showHowToUseModal"
-      @close="showHowToUseModal = false"
-    />
-    <KeyboardShortcuts
-      :isVisible="showKeyboardModal"
-      @close="showKeyboardModal = false"
-    />
-    <About
-      :isVisible="showAboutModal"
-      @close="showAboutModal = false"
-    />
-
   </footer>
 </template>
