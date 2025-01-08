@@ -1,3 +1,5 @@
+![Scrabble Word Finder](public/scrabble-word-finder_preview.png?raw=true "Scrabble Word Finder")
+
 # Scrabble Word Finder
 
 Scrabble Word Finder is a web-based application designed for Greek Scrabble enthusiasts. It provides two main functionalities:
@@ -239,6 +241,33 @@ The production-ready files will be available in the `dist` directory.
 2. **Multilingual Support**: Expand the app to support additional languages, allowing users to play with Scrabble word lists in different languages.
 3. **Custom Dictionaries**: Allow users to upload their own word lists in a compatible format (e.g., CSV, JSON) for personalized searching expirience.
 4. **User Profiles & Statistics**: Enable users to create profiles and track  statistics such as most frequent words, total valid and invalid word searches.
+
+## Cudos & Credits
+
+We would like to extend our gratitude to the following resources and npm packages that made this app possible:
+
+### NPM Packages
+- [vue-toastification](https://github.com/Maronato/vue-toastification) - For providing toast notifications.
+- [gh-pages](https://github.com/tschaub/gh-pages) - For deploying the app to GitHub Pages.
+
+### Icons
+- Icons sourced from [Icônes](https://icones.js.org/), built by @antfu, powered by Iconify, with custom Vue.js components created for this app.
+
+### OpenAI ChatGPT
+- Special thanks to [ChatGPT](https://openai.com/chatgpt) by OpenAI for providing invaluable after-hours support during the development of this app. Though some insights required corrections, its assistance was essential to the project.
+
+### Scrabble Word Data
+- The Greek Scrabble word data follows the official Greek competitive Scrabble word acceptance rules outlined by the [Panhellenic Scrabble Union (PES)](http://greekscrabble.gr). This includes:
+  - [Αποδεκτές Λέξεις 2-8 Γραμμάτων (1/9/2024)](http://greekscrabble.gr/wp-content/uploads/2024/08/2-8-2024_09_01.pdf)
+  - [Κρυμμένες Λέξεις, 30ή έκδοση, Φεβρουάριος 2020](http://greekscrabble.gr/wp-content/uploads/2020/02/krymmenes30.pdf)
+
+## Trademark Notice
+
+Scrabble™ (σκραμπλ) is a product and registered trademark of [Mattel Inc.](https://www.mattel.com/), distributed in the Greek market by [Mattel ΑΕΒΕ](http://www.mattel.gr).
+
+## Contact or Feedback
+
+We value your feedback! If you have any suggestions, comments, or issues, please feel free to visit our [GitHub repository](https://github.com/ApoGouv/scrabble-word-finder) to submit your feedback or report any bugs.
 
 
 ## Conclusion
