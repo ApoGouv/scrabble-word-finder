@@ -1,179 +1,246 @@
 # Scrabble Word Finder
 
-Scrabble Word Finder is a sophisticated web-based application tailored for Greek Scrabble enthusiasts. This tool offers robust functionalities to validate words for their eligibility in official Hellenic Scrabble tournaments and discover valid Scrabble words that can be formed from a given set of letters. Developed as the final project for the [CS50x](https://cs50.harvard.edu/x/) course by Harvard University, this project showcases a comprehensive application of modern web technologies and programming concepts.
+Scrabble Word Finder is a web-based application designed for Greek Scrabble enthusiasts. It provides two main functionalities:
+- **Word Validation**: Check if a Greek word is valid according to the official Hellenic Scrabble dictionary.
+- **Anagram Search**: Find all valid Scrabble words that can be formed from a given set of letters.
+
+Developed as the final project for the [CS50x](https://cs50.harvard.edu/x/) course by Harvard University, this app highlights the practical application of modern web technologies and programming principles, including Vue.js, TypeScript, IndexedDB, and Python for data processing.
+
 
 ## Features
 
 1. **Word Validation**: Verify if a given Greek word is valid according to the official Hellenic Scrabble dictionary.
-2. **Anagram Search**: Input a set of Greek letters and find all valid words (2-8 letters long) that can be formed.
-3. **Wildcard Support**: Use one or two asterisks (*) as wildcards in Anagram Search to represent any letter.
-4. **User-Friendly Interface**:
-   - Clickable Greek Scrabble tiles for letter input.
-   - Dynamic results display with enhanced readability.
-   - Loading indicator for processing tasks.
-   - Keyboard shortcuts: 'Enter' for submission and 'BACKSPACE' to delete the last input entry.
+2. **Anagram Search**: Input a set of Greek letters and discover all valid words (2-8 letters long) that can be formed.
+   - **Wildcard Support**: Use one or two asterisks (*) as wildcards to represent any letter in the Anagram Search.
+   - **Letter Repetition Restrictions**: The app accounts for the Greek letter distribution used in Scrabble (e.g., 1 'Ψ' letter, 2 wildcards (blank tiles), etc.).
+3. **User-Friendly Interface**:
+   - Clickable Greek Scrabble tiles for easy letter selection.
+   - Dynamic and clear results display.
+   - Loading indicator to inform users during data processing.
+   - Keyboard Shortcuts for improved navigation:
+     - **'Enter'**: Submit input.
+     - **'BACKSPACE'**: Delete the last entered character.
+     - **'1'**: Switch to Word Validation mode.
+     - **'2'**: Switch to Anagram Search mode.
+     - **Keyboard letters**: English letters are mapped to Greek characters (both Greek and English characters are accepted for keyboard input).
+4. **Data Caching**: IndexedDB is used to cache data after the first request, improving performance for subsequent queries. Note: the app is not offline-ready yet, as it requires an initial connection for data fetching.
 
----
 
 ## Technical Details
 
-This project is built using modern web technologies:
+This project utilizes modern web technologies to ensure optimal performance and a seamless user experience:
 
-- **Frontend Framework**: Vue.js 3 with TypeScript.
-- **Build Tool**: Vite for fast development and optimized production builds.
-- **Data Storage**: IndexedDB for caching JSON data.
-- **Styling**: Tailwind CSS for responsive, consistent, and modern UI design.
-- **Deployment**: Hosted on GitHub Pages using the `gh-pages` package.
-- **Data preprocessing**: JSON word data are generated from our Python powered scripts.
+- **Data Preprocessing**: Python scripts are used to extract, clean, and generate the Greek Scrabble word data, which is then served to the app as JSON files.
+- - **Build Tool**: Vite is used for fast development, optimized production builds, and efficient module bundling.
+- **Frontend Framework**: Vue.js 3 with TypeScript, offering a reactive, scalable, and type-safe UI for improved maintainability.
+- **Data Storage**: IndexedDB is used for local caching of JSON word data, significantly improving load times and reducing redundant network requests after the first fetch.
+- **Styling**: Tailwind CSS ensures a clean, responsive, and consistent design across different screen sizes and devices.
+- **Deployment**: The app is hosted on GitHub Pages, utilizing the `gh-pages` package for easier deployment processes.
+
 
 ---
 
 ### Python Data Preparation
 
-The project also includes a Python-based preprocessing pipeline that prepares the data used in the app. This process involves extracting, cleaning, and organizing the Greek Scrabble word lists into JSON files, which are then served to the frontend. The pipeline performs the following tasks:
+The project includes a Python-based preprocessing pipeline to prepare the data used in the app. The process involves extracting, cleaning, and organizing Greek Scrabble word lists into JSON files, which are then served to the frontend. The pipeline works with two primary sources:
 
-1. **Data Extraction**: The Python scripts extract words from official Scrabble word lists (PDFs) and structure them into JSON files.
-2. **Data Cleanup**: The extracted data for the words references contain words with greater than 8 characters, so we filter those entries. 
-3. **Word Merging**: The raw word lists are merged with references from dictionaries to provide comprehensive data.
-4. **Data Processing**: The data is processed to include additional metadata like word length, Scrabble points, and alphagrams (sorted letters).
-5. **Data Splitting**: The final processed data is split into smaller files for efficient retrieval in the web app.
+1. **Αποδεκτές Λέξεις 2-8 Γραμμάτων (1/9/2024)**: This document contains all valid Greek words from 2 to 8 letters, with a total of 162,531 words extracted from 460 pages of the PDF. File is located in: `data-prep/assets/pdf/scrabble-acceptable-greek-words-2-8-2024_09_01.pdf`
+2. **Κρυμμένες Λέξεις, 30ή έκδοση, Φεβρουάριος 2020**: This document provides additional valid words, including metadata like lemma, dictionary source, and example usage. It serves as a helpful reference for tournament officials and includes extra details that enrich the word entries. File is located in: `data-prep/assets/pdf/scrabble-word-refs-2020-02-12.pdf`
+
+The preprocessing pipeline performs the following tasks:
+
+1. **Data Extraction**:
+   - Words are extracted from both PDF documents. The first PDF provides a basic list of valid words, while the second one adds metadata such as lemma, dictionary, and example comments.
+   
+2. **Data Cleanup**:
+   - For the second list, a refinement script fixes entries with missing 'lemma' or 'dictionary' fields, ensuring the completeness of the metadata.
+
+3. **Data Filtering**:
+   - Words entries from the new fixed list that do not meet the 2-8 letter count restriction are discarded, maintaining consistency with the official Greek Scrabble rules.
+
+4. **Word Merging**:
+   - The raw word list from first PDF and the cleanedup list from the second PDF are merged, with the second document's metadata being added to the words from the first document, ensuring comprehensive word information.
+
+5. **Data Processing**:
+   - The merged data is further processed to include additional details like word length, Scrabble points, and alphagrams (sorted letters). This helps with validation and anagram search functionalities in the app.
+
+6. **Data Splitting**:
+   - The final processed data is split into two primary formats:
+     - **Separate JSON files for each starting letter**: This results in 24 JSON files, one for each letter of the Greek alphabet. These are used for word validation in the frontend app.
+     - **A single JSON file with words grouped by alphagram**: This file contains words sorted by their alphagram (sorted letters) without additional metadata, used for the anagram search functionality.
+
+This comprehensive data pipeline ensures that the word data is well-structured, accurate, and optimized for use in the app, enabling fast and efficient word validation and anagram search features.
+
 
 ### Python Data Flow
 
-After preprocessing, the data is automatically copied into the `public/data` folder of the Vue app using the `copyDataFiles.js` script, enabling seamless integration between the Python data preparation pipeline and the frontend.
 
----
+Once the preprocessing pipeline completes, the generated JSON files are seamlessly integrated into the frontend app. This is achieved using the npm script:
 
-## Design Decisions
+```bash
+npm run copy-scrabble-web-data
+```
 
-1. **Word Data Organization**:
-   - Data is divided into JSON files based on alphagrams and starting letters for efficient searching.
-   - IndexedDB is utilized to minimize network requests and improve performance.
+This script copies the processed JSON files into the `public/data` folder of the Vue app. Specifically:
 
-2. **Wildcard Implementation**:
-   - Wildcards required updating the anagram generation logic to handle multiple combinations for each wildcard.
+   1. The 24 JSON files (one for each Greek alphabet letter) are used in the Word Validation mode.
+   2. The single JSON file containing words grouped by alphagram is used in the Anagram Search mode.
 
-3. **Accessibility and Usability**:
-   - ARIA roles and labels are integrated to enhance accessibility.
-   - Keyboard shortcuts, such as 'Enter' for submission and 'BACKSPACE' to delete the last input entry, provide a seamless user experience.
+This automated process ensures that the most up-to-date word data is always available in the app without manual intervention, streamlining the integration between the Python preprocessing pipeline and the Vue.js frontend.
 
-4. **Dynamic Interface**:
-   - The app dynamically adapts its results and settings based on the selected mode, ensuring an intuitive workflow.
 
----
+## Design Decisions and Challenges
 
-## File Structure
+1. **Word Data Organization**  
+   - **Design Decision**: Word data is structured for optimal performance:
+     - JSON files are split by starting letters (24 files) for efficient word validation.  
+     - A single JSON file grouped by alphagrams is used for rapid anagram searches.  
+   - **Challenge**: Fetching large JSON datasets for word validation and anagram search could lead to performance issues.  
+   - **Solution**: Implemented IndexedDB to cache data locally. Users only experience a delay during the initial fetch, and subsequent lookups are fast as data is read from IndexedDB. While the app is not yet offline-ready, this feature sets the foundation for future enhancements.
 
-- **`Python Scripts`**:
-    - `data-prep/`: Contains Python scripts for preparing the word data.
-        - `merge_scrabble_words_with_references.py`: Merges raw words with references from dictionaries.
-        - `preprocess_scrabble_data.py`: Processes data, adds additional metadata like points and alphagrams.
-        - `split_scrabble_data_for_web.py`: Splits the processed data for web usage based on starting letters and alphagrams.
-- **`Vue App Scripts`**:
-  - `copyDataFiles.js`: Script to copy the processed data into the Vue app’s public/data folder.
+2. **Wildcard Implementation**  
+   - **Design Decision**: The anagram search logic supports up to two wildcard characters (`*`), generating and evaluating multiple letter combinations for each wildcard to ensure accurate results. To handle the complexity of lookups efficiently, the JSON file for alphagrams is kept as a single file rather than split, minimizing file reads and speeding up anagram searches.  
+   - **Challenge**: Generating all possible letter combinations for one or two wildcards (`*`) was computationally intensive. Additionally, some combinations were redundant due to the non-importance of letter order in anagrams.
+   - **Solution**: 
+     - To ensure uniqueness in the generated combinations, we utilized a **Set** to automatically remove duplicate entries.
+     - We also applied the **alphagram** concept (sorting the letters alphabetically) to reduce redundancies. For example, when generating combinations for `α*`, we would produce:
+       - `αα`, `αβ`, `βα`, `αγ`, `γα`, `αδ`, `δα`
+     - After applying the alphagram logic (sorting and filtering), the unique combinations would be:
+       - `αα`, `αβ`, `αγ`, `αδ`
+     - This approach not only eliminated redundant combinations but also ensured that the anagram search logic remained efficient while maintaining accurate results.
 
-  - **`src/components`**:
-    - `Header.vue`: Displays the app’s header with a title and navigation.
-    - `Footer.vue`: Contains copyright and link to the source code.
-    - `LetterTile.vue`: Represents clickable Greek Scrabble tiles.
-    - `Results.vue`: Dynamically renders validation or anagram search results.
+3. **Accessibility and Usability**  
+   - **Design Decision**: The app is designed with accessibility and ease of use in mind:
+     - ARIA roles and labels are integrated to enhance accessibility for users with disabilities.  
+     - Keyboard shortcuts improve usability:
+       - **'Enter'**: Submit the current input for validation or search.  
+       - **'Backspace'**: Remove the last entered letter.  
+       - **'1'** and **'2'**: Switch between the Word Validation and Anagram Search modes.  
+       - Greek and English letter input is supported, with automatic mapping to Greek characters.  
+   - **Challenge**: Ensuring the app is intuitive for all users, including those relying on assistive technologies.  
+   - **Solution**: ARIA roles, labels, and keyboard shortcuts ensure an inclusive and smooth user experience.
 
-  - **`src/api`**:
-    - `idb.ts`: Manages IndexedDB operations, such as storing and fetching cached data.
-    - `dataFetcher.ts`: Handles fetching JSON files for alphagrams and starting letters.
+4. **Dynamic Interface**  
+   - **Design Decision**: The interface dynamically updates results and settings based on the selected mode, offering a seamless workflow. Real-time feedback, including loading indicators during data processing, keeps users informed.  
+   - **Challenge**: Displaying search results in an organized and visually appealing way.  
+   - **Solution**: Results are grouped by word length and styled using Tailwind CSS, ensuring clarity and visual appeal.
 
-  - **`src/utils`**:
-    - `appHelpers.ts`: Contains utility functions like alphagram generation and wildcard handling.
-    - `logger.ts`: Manages environment-specific logging.
+These design choices collectively ensure the app is user-friendly, efficient, and aligned with modern web development best practices.
 
-  - **`src/views`**:
-    - `App.vue`: The main component integrating the app's functionality.
-    - `Modes.vue`: Handles mode selection (validation or anagram search).
-
-  - **`public/data`**:
-    - JSON datasets containing valid Greek Scrabble words categorized for efficient lookups.
-
----
 
 ## Usage Instructions
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ApoGouv/scrabble-word-finder.git
-   cd scrabble-word-finder
-   ```
+Follow these steps to set up and run the **Scrabble Word Finder** app locally:
 
-0. Run the Python data preprocessing:
-   
-   - Move to the `data-prep` folder
-    ```bash
+---
+
+### 1. Clone the repository
+
+Clone the project from GitHub and navigate to the project folder:
+
+```bash
+git clone https://github.com/ApoGouv/scrabble-word-finder.git
+cd scrabble-word-finder
+```
+
+---
+
+### 2. Run the Python data preprocessing
+
+The preprocessing pipeline prepares the Scrabble word data for the app.
+
+1. Navigate to the `data-prep` directory:
+   ```bash
    cd data-prep
    ```
 
-    > @see [Python packaging docs for: Create and Use Virtual Environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments) 
-    
-    For Windows: 
-    - Create a Virtual Environment and activate it: 
-    ```bash
-    py -m venv .venv
-    .venv\Scripts\activate
-    ```
+2. Create and activate a virtual environment:
 
-    - Install the required Python packages:
-    ```bash
-    py -m pip install -r requirements.txt
-    ```
+   Refer to [Python packaging docs for: Create and Use Virtual Environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments) for detailed instructions.
+ 
+   - **Windows**:
+      ```bash
+      py -m venv .venv
+      .venv\Scripts\activate
+      ```
 
-    - Run the data preprocessing pipeline:
-    ```bash
-    python pipeline.py 
-    python split_scrabble_data_for_web.py 
-    ```
+   - **Linux/Mac**: 
+      ```bash
+      python3 -m venv .venv
+      source .venv/bin/activate
+      ```
 
-3. Ensure the data is copied to the public/data folder using the copyDataFiles.js script:
-    ```bash
-    cd ../
-    npm run copy-scrabble-web-data
-    ```
+3. Install the required Python packages:
 
-4. Install npm dependencies:
-    ```bash
-    npm install
-    ```
+   - **Windows**: 
+      ```bash
+      py -m pip install --upgrade pip
+      py -m pip --version
+      py -m pip install -r requirements.txt
+      ```
 
-5. Run the Vite development server and test the app:
-    ```bash
-    npm run dev
-    ```
-    Open the app at localhost:5173.
+   - **Linux/Mac**: 
+      ```bash
+      python3 -m pip install --upgrade pip
+      python3 -m pip --version
+      python3 -m pip install -r requirements.txt
+      ```
 
-6. Build the app for production:
-    ```bash
-    npm run build
-    ```
+4. Run the preprocessing scripts to generate JSON data:
+   ```bash
+   python pipeline.py
+   python split_scrabble_data_for_web.py
+   ```
 
-## Challenges and Solutions
+--- 
 
-1. Data Caching:
-   - Challenge: Fetching large JSON datasets could result in performance issues
-   - Solution: Implemented IndexedDB to store and retrieve data locally. That way we only have to wait once for a JSON file we have not yet fetched and afterwards we are reading the data from IndexedDB.
-  
-2. Wildcard Logic:
+### 3. Copy Data to the Frontend
 
-   - Challenge: Generating all possible alphagrams with one or two wildcards was computationally intensive.
-   - Solution: Optimized the logic by dynamically replacing wildcards and limiting combinations based on practical Scrabble scenarios.
+Move back to the root directory and copy the processed data into the Vue app’s `public/data` folder:
+```bash
+cd ../
+npm run copy-scrabble-web-data
+```
 
-3. Dynamic Results Display:
+---
 
-   - Challenge: Displaying results in an organized and visually appealing manner.
-   - Solution: Grouped results by word length and styled them using Tailwind CSS for clarity.
+### 4. Install Frontend Dependencies
+Install all required npm packages:
+```bash
+npm install
+```
+
+---
+
+### 5. Run the App in Development Mode
+Start the development server:
+```bash
+npm run dev
+```
+The app will be available at: [http://localhost:5173](http://localhost:5173).
+
+---
+
+### 6. Build the App for Production
+When ready to deploy, build the app:
+```bash
+npm run build
+```
+
+The production-ready files will be available in the `dist` directory.
+
 
 ## Future Enhancements
 
 1. Custom Dictionaries: Allow users to upload and use their own word lists.
 2. Statistics: Display player statistics like most frequent words or top scores.
 
+1. **Offline Mode**: Enhance the app to function offline by caching all necessary data locally, allowing users to continue using it without an internet connection.
+2. **Multilingual Support**: Expand the app to support additional languages, allowing users to play with Scrabble word lists in different languages.
+3. **Custom Dictionaries**: Allow users to upload their own word lists in a compatible format (e.g., CSV, JSON) for personalized searching expirience.
+4. **User Profiles & Statistics**: Enable users to create profiles and track  statistics such as most frequent words, total valid and invalid word searches.
+
 
 ## Conclusion
 
-Scrabble Word Finder is a comprehensive tool for Greek Scrabble players. It combines advanced data processing with a user-friendly interface to deliver a seamless experience. This project challenged me to apply and expand my skills in programming, design, and optimization, and I am proud to present it as my CS50x final project.
+**Scrabble Word Finder** is an efficient and user-friendly tool designed for Greek Scrabble players. By combining advanced data processing techniques with a clean, dynamic interface, the app offers a seamless experience for word validation and anagram search. This project allowed me to apply and deepen my skills in programming, data organization, and optimization. As my final project for the CS50x course, it’s a reflection of my learning journey, and I’m proud to share it as a valuable resource for the Scrabble community.
