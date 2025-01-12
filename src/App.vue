@@ -11,6 +11,7 @@
   import KeyboardShortcutsModal from '@/components/modals/KeyboardShortcutsModal.vue'
   import AboutModal from '@/components/modals/AboutModal.vue'
   import HowToUseModal from "@/components/modals/HowToUseModal.vue";
+  import ProjectInfoModal from "@/components/modals/ProjectInfoModal.vue";
   import { validateWord } from '@/api/wordValidation';
   import { searchAnagrams } from '@/api/searchAnagrams';
   import BackspaceOutline from '@/icons/BackspaceOutline.vue';
@@ -50,6 +51,7 @@
   const showHowToUseModal = ref(false);
   const showKeyboardModal = ref(false);
   const showAboutModal = ref(false);
+  const isProjectInfoVisible = ref(false);
 
   // Handle keyboard key presses
   const handleKeyPress = (event: KeyboardEvent) => {
@@ -57,6 +59,14 @@
 
     if ((event.ctrlKey || event.metaKey) && key === 'R') {
       // Do nothing, we just let browser refresh the page.
+      return;
+    }
+
+    if ((event.ctrlKey || event.metaKey) 
+      && event.altKey
+      && key === 'I'
+    ) {
+      isProjectInfoVisible.value = true;
       return;
     }
 
@@ -404,6 +414,10 @@
     <AboutModal
       :isVisible="showAboutModal"
       @close="showAboutModal = false"
+    />
+    <ProjectInfoModal
+      :isVisible="isProjectInfoVisible"
+      @close="isProjectInfoVisible = false"
     />
   </div>
 </template>
