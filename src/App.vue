@@ -8,8 +8,8 @@
   import Results from '@/components/Results.vue';
   import Loader from '@/components/Loader.vue';
   import GitHubRibbon from '@/components/GitHubRibbon.vue'
-  import KeyboardShortcuts from '@/components/modals/KeyboardShortcuts.vue'
-  import About from '@/components/modals/About.vue'
+  import KeyboardShortcutsModal from '@/components/modals/KeyboardShortcutsModal.vue'
+  import AboutModal from '@/components/modals/AboutModal.vue'
   import HowToUseModal from "@/components/modals/HowToUseModal.vue";
   import { validateWord } from '@/api/wordValidation';
   import { searchAnagrams } from '@/api/searchAnagrams';
@@ -397,11 +397,11 @@
       @close="showHowToUseModal = false"
       @show-keyboard-shortcuts-modal="showKeyboardModal = true"
     />
-    <KeyboardShortcuts
+    <KeyboardShortcutsModal
       :isVisible="showKeyboardModal"
       @close="showKeyboardModal = false"
     />
-    <About
+    <AboutModal
       :isVisible="showAboutModal"
       @close="showAboutModal = false"
     />
