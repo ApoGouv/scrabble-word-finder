@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
 
-  defineProps<{
+  const tileProps = defineProps<{
     letter: string;
     points?: number;
     isDisabled: boolean;
@@ -13,18 +13,18 @@
 
   const isHovered = ref(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   const handleHover = () => {
-//     isHovered.value = true;
-//     setTimeout(() => {
-//       isHovered.value = false;
-//     }, 300); // Duration to match hover effect
-//   };
+  const tileTitle = computed(() => {
+    if (tileProps.letter === '*') {
+      return `Wildcard Letter (*): Will represent any letter during the search (0 points)`;
+    }
+    return `Letter ${tileProps.letter} (${tileProps.points ?? 0} points)`;
+  });
 </script>
 
 <template>
   <button
-    :aria-label="`Letter ${letter} (${points} points)`"
+    :aria-label="tileTitle"
+    :title="tileTitle"
     :role="'button'"
     :aria-disabled="isDisabled"
     :disabled="isDisabled"
