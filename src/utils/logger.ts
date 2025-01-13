@@ -1,5 +1,4 @@
-// Vite environment variable to check if the app is running in development mode
-const isDevelopment = import.meta.env.MODE === 'development';
+import { isDevelopment } from '@/utils/environment';
 
 /**
  * Custom logger for development environment.
@@ -14,7 +13,7 @@ export const logger = {
    * @param args - The message(s) to log.
    */
   log: (...args: any[]) => {
-    if (isDevelopment) {
+    if (isDevelopment()) {
       // Logs the arguments passed to the console
       console.log(...args);
     }
@@ -26,7 +25,7 @@ export const logger = {
    * @param args - The warning message(s) to log.
    */
   warn: (...args: any[]) => {
-    if (isDevelopment) {
+    if (isDevelopment()) {
       // Logs warning messages to the console
       console.warn(...args);
     }
