@@ -35,6 +35,18 @@ export const letterData = [
 ];
 
 /**
+ * Returns an array of Greek letters from the letterData.
+ * Filters out the wildcard (*) from the list.
+ *
+ * @returns Array of Greek letters without wildcards.
+ */
+export function getGreekLetters(): string[] {
+  return letterData
+    .filter((item) => item.letter !== '*') // Exclude the wildcard
+    .map((item) => item.letter);
+}
+
+/**
  * Maps English letters to their corresponding Greek letters based on
  * the Greek keyboard layout.
  * This map is used for converting English letters into Greek letters

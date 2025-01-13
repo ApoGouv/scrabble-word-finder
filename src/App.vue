@@ -21,13 +21,13 @@
     validateInput,
     resetLetterCounts,
     addLetterToInput,
-    isElementInViewport,
   } from './utils/appHelpers';
   import {
     letterData,
     englishToGreekMap,
   } from './utils/letterData';
   import { results, processValidationResult, processAnagramResults } from '@/utils/resultsHelpers';
+  import { isElementInViewport } from './utils/domHelpers';
 
   const toast = useToast();
 
