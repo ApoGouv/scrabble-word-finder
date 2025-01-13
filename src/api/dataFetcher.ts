@@ -1,4 +1,5 @@
 import { logger } from '@/utils/logger';
+import { isDevelopment } from '@/utils/environment';
 
 /**
  * Fetches words starting with a specific letter from the data folder.
@@ -13,7 +14,9 @@ export async function fetchWordsByLetter(
   // Construct the URL based on the provided letter
   const url = `${
     import.meta.env.BASE_URL
-  }/data/words_by_starting_letter/words_starting_with_${letter}.json`;
+  }/data/words_by_starting_letter/words_starting_with_${letter}${
+    isDevelopment() ? '' : '_min'
+  }.json`;
 
   try {
     // Fetch the data from the constructed URL
@@ -46,7 +49,9 @@ export async function fetchWordsByAlphagram(): Promise<Record<
   // Construct the URL for fetching words grouped by alphagram
   const url = `${
     import.meta.env.BASE_URL
-  }data/words_by_alphagram/words_grouped_by_alphagram.json`;
+  }/data/words_by_alphagram/words_grouped_by_alphagram${
+    isDevelopment() ? '' : '_min'
+  }.json`;
 
   try {
     // Fetch the data from the constructed URL
