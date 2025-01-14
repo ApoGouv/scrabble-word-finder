@@ -40,7 +40,6 @@ const onClose = () => emit("close");
           />
           <div>
             <p class="text-gray-100 font-semibold text-lg">Scrabble Word Finder</p>
-            <p class="text-gray-400 text-sm">CS50x Final Project Submission</p>
           </div>
         </div>
 
