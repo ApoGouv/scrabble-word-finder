@@ -87,7 +87,7 @@ const onClose = () => emit("close");
           <div class="flex items-center gap-3">
             <CalendarIcon class="w-6 h-6 text-yellow-400" />
             <p class="text-gray-400">
-              <span class="text-gray-100 font-medium">Date:</span> 2025-01-13
+              <span class="text-gray-100 font-medium">Date:</span> 2025-01-14
             </p>
           </div>
         </div>
